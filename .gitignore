@@ -1,20 +1,38 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-/.idea/deploymentTargetDropDown.xml
-/.idea/shelf
-.DS_Store
+local.properties
+/keystore.properties
+*.jks
+*.keystore
+
+# Android Studio / IntelliJ IDEA
+.idea/
+*.iws
+out/
+
+# VS Code & Gemini
+.vscode/
+.gemini/
+
+# Build outputs
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties
-/keystore.properties
+*.apk
+*.aab
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Kotlin / KMP
 .kotlin
 .kilo/kilo.jsonc
+
+# Python / Scripts
+__pycache__/
+*.pyc
+
