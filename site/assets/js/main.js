@@ -14,8 +14,8 @@
 
 /* ── Config ─────────────────────────────────────────────────── */
 const CONFIG = {
-  apiUrl:    'https://api.github.com/repos/MaheshTechnicals/Sealplus/releases',
-  cacheKey:  'sealplus_releases_cache',
+  apiUrl:    'https://api.github.com/repos/Ziad-Yousfi/Walrus/releases',
+  cacheKey:  'walrus_releases_cache',
   cacheTTL:  60 * 60 * 1000,   // 1 hour in ms
   maxReleases: 15,
 };
