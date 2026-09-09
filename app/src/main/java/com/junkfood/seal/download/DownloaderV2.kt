@@ -139,7 +139,7 @@ class DownloaderV2Impl(private val appContext: Context) : DownloaderV2, KoinComp
     // real fix is holding the CPU awake for the download's duration in the first place.
     private val wakeLock: PowerManager.WakeLock by lazy {
         val powerManager = appContext.getSystemService(Context.POWER_SERVICE) as PowerManager
-        powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "SealPlus::DownloadWakeLock")
+        powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Walrus::DownloadWakeLock")
             .apply { setReferenceCounted(false) }
     }
 

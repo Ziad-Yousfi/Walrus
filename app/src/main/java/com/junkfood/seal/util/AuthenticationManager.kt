@@ -21,7 +21,7 @@ import javax.crypto.SecretKeyFactory
 import javax.crypto.spec.PBEKeySpec
 
 private const val TAG = "AuthenticationManager"
-private const val KEYSTORE_ALIAS = "SealPlusAuthKey"
+private const val KEYSTORE_ALIAS = "WalrusAuthKey"
 private const val TRANSFORMATION = "AES/GCM/NoPadding"
 
 // PBKDF2 parameters

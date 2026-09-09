@@ -1,0 +1,122 @@
+name: Sync with Upstream
+
+on:
+  schedule:
+    # Runs daily at 04:00 UTC (every 24h)
+    - cron: '0 4 * * *'
+  workflow_dispatch:
+    inputs:
+      upstream_repo:
+        description: 'Upstream repository URL'
+        required: true
+        default: 'https://github.com/MaheshTechnicals/Sealplus.git'
+      upstream_branch:
+        description: 'Upstream branch to sync from'
+        required: true
+        default: 'main'
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync-upstream:
+    name: Sync Upstream Changes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git identity
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+
+      - name: Add and Fetch Upstream
+        run: |
+          UPSTREAM_URL="${{ github.event.inputs.upstream_repo || 'https://github.com/MaheshTechnicals/Sealplus.git' }}"
+          UPSTREAM_BRANCH="${{ github.event.inputs.upstream_branch || 'main' }}"
+          echo "Adding upstream: $UPSTREAM_URL ($UPSTREAM_BRANCH)"
+          git remote add upstream "$UPSTREAM_URL" || git remote set-url upstream "$UPSTREAM_URL"
+          git fetch upstream "$UPSTREAM_BRANCH"
+
+      - name: Check for new upstream commits
+        id: check_sync
+        run: |
+          UPSTREAM_BRANCH="${{ github.event.inputs.upstream_branch || 'main' }}"
+          BEHIND_COUNT=$(git rev-list --count HEAD..upstream/"$UPSTREAM_BRANCH")
+          echo "Commits behind upstream: $BEHIND_COUNT"
+          echo "behind_count=$BEHIND_COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Merge Upstream Changes (favoring Walrus customizations on conflict)
+        if: steps.check_sync.outputs.behind_count > 0
+        id: do_merge
+        run: |
+          UPSTREAM_BRANCH="${{ github.event.inputs.upstream_branch || 'main' }}"
+          echo "Merging upstream/$UPSTREAM_BRANCH with strategy option -X ours..."
+
+          # -X ours merges all upstream changes, bug fixes and dependency updates,
+          # while automatically resolving any conflicting lines in favor of Walrus customizations (name, removed popups, icons).
+          if git merge upstream/"$UPSTREAM_BRANCH" -X ours -m "chore(sync): merge upstream updates from MaheshTechnicals/Sealplus [skip ci]"; then
+            echo "Merge successful without conflict."
+            echo "status=success" >> "$GITHUB_OUTPUT"
+          else
+            echo "Complex merge conflict detected."
+            git merge --abort || true
+            echo "status=conflict" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Re-apply Walrus branding to any new upstream strings
+        if: steps.do_merge.outputs.status == 'success'
+        run: |
+          python3 - << 'EOF'
+          import os, re
+
+          res_dir = 'app/src/main/res'
+          if os.path.isdir(res_dir):
+              for root, dirs, files in os.walk(res_dir):
+                  for f in files:
+                      if f == 'strings.xml':
+                          fp = os.path.join(root, f)
+                          with open(fp, 'r', encoding='utf-8') as file:
+                              content = file.read()
+                          
+                          new_content = re.sub(r'Seal\s*Plus', 'Walrus', content, flags=re.IGNORECASE)
+                          new_content = re.sub(r'Seal\s*\+', 'Walrus', new_content)
+                          new_content = re.sub(r'SealPlus', 'Walrus', new_content, flags=re.IGNORECASE)
+                          
+                          if new_content != content:
+                              with open(fp, 'w', encoding='utf-8') as file:
+                                  file.write(new_content)
+                              print(f"Updated branding in {fp}")
+          EOF
+
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "chore(branding): re-apply Walrus branding on newly added upstream strings"
+          fi
+
+      - name: Push to main
+        if: steps.do_merge.outputs.status == 'success'
+        run: |
+          git push origin main
+
+      - name: Handle Conflicts via Branch & PR
+        if: steps.do_merge.outputs.status == 'conflict'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          UPSTREAM_BRANCH="${{ github.event.inputs.upstream_branch || 'main' }}"
+          SYNC_BRANCH="upstream-sync-$(date +%Y%m%d%H%M%S)"
+          git checkout -b "$SYNC_BRANCH"
+          git merge upstream/"$UPSTREAM_BRANCH" || true
+          git push origin "$SYNC_BRANCH"
+          gh pr create \
+            --title "⚠️ Upstream Sync Conflicts ($SYNC_BRANCH)" \
+            --body "A sync with upstream had conflicts that could not be automatically resolved. Please review and merge." \
+            --base main \
+            --head "$SYNC_BRANCH" || echo "PR creation failed or already exists"

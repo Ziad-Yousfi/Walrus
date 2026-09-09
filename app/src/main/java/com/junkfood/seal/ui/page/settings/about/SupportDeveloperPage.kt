@@ -133,7 +133,7 @@ fun SupportDeveloperPage(
                                 MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Text(
-                            text = "Your support helps keep Seal Plus free and actively maintained",
+                            text = "Your support helps keep Walrus free and actively maintained",
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             color = if (isDarkTheme && isGradientDark) 
@@ -271,7 +271,7 @@ fun SupportDeveloperPage(
                             context = context,
                             upiId = "MaheshTechnicals@idbi",
                             name = "Mahesh Technicals",
-                            note = "Support Seal Plus Development"
+                            note = "Support Walrus Development"
                         )
                     }
                 )
@@ -373,7 +373,7 @@ fun SupportDeveloperPage(
                             modifier = Modifier.size(24.dp)
                         )
                         Text(
-                            text = "All donations help maintain and improve Seal Plus. Thank you for your support! 💙",
+                            text = "All donations help maintain and improve Walrus. Thank you for your support! 💙",
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.weight(1f)

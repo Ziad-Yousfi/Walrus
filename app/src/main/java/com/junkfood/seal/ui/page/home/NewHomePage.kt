@@ -152,11 +152,6 @@ import com.junkfood.seal.util.toFileSizeText
 import com.junkfood.seal.util.getErrorReport
 import com.junkfood.seal.util.makeToast
 import com.junkfood.seal.util.matchUrlFromClipboard
-import com.junkfood.seal.util.SPONSOR_DIALOG_FREQUENCY
-import com.junkfood.seal.util.SPONSOR_DIALOG_LAST_SHOWN
-import com.junkfood.seal.util.SPONSOR_FREQ_OFF
-import com.junkfood.seal.util.SPONSOR_FREQ_WEEKLY
-import com.junkfood.seal.util.BatteryUtil
 import com.junkfood.seal.util.PreferenceUtil.getInt
 import com.junkfood.seal.util.PreferenceUtil.getLong
 import com.junkfood.seal.util.PreferenceUtil.updateLong
@@ -244,9 +239,8 @@ fun NewHomePage(
     
     // Permission states
     var showNotificationPermissionDialog by remember { mutableStateOf(false) }
-    var showBatteryOptimizationDialog by remember { mutableStateOf(false) }
+
     var permissionsChecked by remember { mutableStateOf(false) }
-    var showSponsorDialog by remember { mutableStateOf(false) }
     
     // Check notification permission
     val hasNotificationPermission = remember(lifecycleRefreshTrigger) {
@@ -260,51 +254,11 @@ fun NewHomePage(
         }
     }
     
-    // Check battery optimization
-    // NOTE: no cooldown/dismissal flag at all — this reminder should show every single time the
-    // app is opened for as long as battery optimization is still not disabled, since disabling
-    // it is required for reliable background downloads. There's nothing to remember between
-    // launches: shouldPromptBatteryDialog() always reflects the live, real-time system state.
-    //
-    // This is a directly settable mutableStateOf (not a remember(key) derived value) because we
-    // need to refresh it from TWO independent triggers: (1) lifecycleRefreshTrigger on every
-    // ON_RESUME, and (2) the battery settings activity-result callback below. #2 exists because
-    // on some OEM ROMs, the OS does not commit/propagate the new battery-optimization
-    // whitelist state instantly — there can be a short delay between the user picking "No
-    // restrictions" in the settings screen and PowerManager.isIgnoringBatteryOptimizations()
-    // actually reflecting it. Reading it at the exact instant ON_RESUME fires (right as the
-    // user presses back) can race that propagation and read the stale "still restricted" value,
-    // which is exactly why the dialog kept reappearing even after the user had correctly fixed
-    // the setting. Re-checking again after a short delay closes that race.
-    var isBatteryOptimizationDisabled by remember {
-        mutableStateOf(BatteryUtil.isIgnoringBatteryOptimizations(context))
-    }
-    val shouldPromptBatteryDialog = { !isBatteryOptimizationDisabled }
-
-    LaunchedEffect(lifecycleRefreshTrigger) {
-        isBatteryOptimizationDisabled = BatteryUtil.isIgnoringBatteryOptimizations(context)
-    }
-    
     // Notification permission launcher - tries system permission first
     // Notification settings launcher - opens app notification settings
     val notificationSettingsLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { /* Permission state will be checked on resume */ }
-    
-    // Battery optimization launcher. The activity-result callback fires right when the user
-    // returns from the OS battery settings screen (whether via back press or completing a
-    // system dialog) — we re-check immediately AND again after a short delay (see the NOTE
-    // above the isBatteryOptimizationDisabled declaration) to avoid racing a delayed OS-side
-    // whitelist update on some OEM ROMs.
-    val batteryOptimizationLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult()
-    ) {
-        isBatteryOptimizationDisabled = BatteryUtil.isIgnoringBatteryOptimizations(context)
-        scope.launch {
-            delay(500L)
-            isBatteryOptimizationDisabled = BatteryUtil.isIgnoringBatteryOptimizations(context)
-        }
-    }
 
     
     // Check permissions on first load
@@ -313,57 +267,11 @@ fun NewHomePage(
             permissionsChecked = true
             if (!hasNotificationPermission) {
                 showNotificationPermissionDialog = true
-            } else if (shouldPromptBatteryDialog()) {
-                showBatteryOptimizationDialog = true
-            }
-        }
-        // Sponsor support dialog — delay slightly so permissions dialogs get priority
-        delay(600L)
-        val frequency = SPONSOR_DIALOG_FREQUENCY.getInt()
-        if (frequency != SPONSOR_FREQ_OFF) {
-            val lastShown = SPONSOR_DIALOG_LAST_SHOWN.getLong()
-            val intervalMs = if (frequency == SPONSOR_FREQ_WEEKLY)
-                7L * 24 * 60 * 60 * 1000
-            else
-                30L * 24 * 60 * 60 * 1000
-            val now = System.currentTimeMillis()
-            if (lastShown == 0L || now - lastShown >= intervalMs) {
-                showSponsorDialog = true
             }
         }
     }
     
-    // Monitor permission state changes to show next dialog when user returns from settings
-    LaunchedEffect(hasNotificationPermission, isBatteryOptimizationDisabled) {
-        if (permissionsChecked) {
-            // If notification dialog was shown and is now dismissed
-            if (!showNotificationPermissionDialog && hasNotificationPermission && shouldPromptBatteryDialog()) {
-                // Show battery optimization dialog after notification permission is granted
-                showBatteryOptimizationDialog = true
-            }
-        }
-    }
 
-    // Re-prompt on every app resume, even when isBatteryOptimizationDisabled's VALUE hasn't
-    // changed. NOTE: the effect above only fires when hasNotificationPermission or
-    // isBatteryOptimizationDisabled actually CHANGE VALUE — if battery optimization was already
-    // restricted before this resume and is STILL restricted after it (the common case: the user
-    // dismissed the dialog without touching the setting), the boolean is identical and that
-    // effect does not re-run. That silently broke the requirement that this dialog show every
-    // single time the app is opened/resumed for as long as the setting is wrong — it only
-    // actually resurfaced after a full process restart (which resets permissionsChecked), not on
-    // a simple background→foreground resume. Keying directly on lifecycleRefreshTrigger (which
-    // increments on every ON_RESUME, regardless of whether the derived booleans changed) closes
-    // that gap.
-    LaunchedEffect(lifecycleRefreshTrigger) {
-        if (permissionsChecked &&
-            !showNotificationPermissionDialog &&
-            hasNotificationPermission &&
-            shouldPromptBatteryDialog()
-        ) {
-            showBatteryOptimizationDialog = true
-        }
-    }
     
     // Always-on collection: LaunchedEffect is tied to the composition lifetime (not Android
     // lifecycle), so Room emissions are NEVER missed — not when on the back stack, not when
@@ -521,9 +429,6 @@ fun NewHomePage(
         AlertDialog(
             onDismissRequest = { 
                 showNotificationPermissionDialog = false
-                if (shouldPromptBatteryDialog()) {
-                    showBatteryOptimizationDialog = true
-                }
             },
             icon = { 
                 Icon(
@@ -570,9 +475,6 @@ fun NewHomePage(
                 TextButton(
                     onClick = { 
                         showNotificationPermissionDialog = false
-                        if (shouldPromptBatteryDialog()) {
-                            showBatteryOptimizationDialog = true
-                        }
                     }
                 ) {
                     Text(
@@ -660,20 +562,7 @@ fun NewHomePage(
         )
     }
 
-    // Sponsor support dialog
-    if (showSponsorDialog) {
-        SponsorSupportDialog(
-            onDismiss = {
-                showSponsorDialog = false
-                SPONSOR_DIALOG_LAST_SHOWN.updateLong(System.currentTimeMillis())
-            },
-            onSupport = {
-                showSponsorDialog = false
-                SPONSOR_DIALOG_LAST_SHOWN.updateLong(System.currentTimeMillis())
-                onNavigateToSupport()
-            },
-        )
-    }
+
 
     // Exit confirmation dialog
     if (showExitDialog) {
@@ -748,7 +637,7 @@ fun NewHomePage(
             contentPadding = PaddingValues(horizontal = 20.dp, vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            // Seal+ Branding with animated glowing "+"
+            // Walrus Branding
             item {
                 Box(
                     modifier = Modifier
@@ -756,15 +645,12 @@ fun NewHomePage(
                         .padding(vertical = 16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(
-                            text = "Seal",
-                            style = MaterialTheme.typography.displayMedium,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onBackground
-                        )
-                        AnimatedGlowingPlus()
-                    }
+                    Text(
+                        text = "Walrus",
+                        style = MaterialTheme.typography.displayMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
                 }
             }
 
@@ -2673,7 +2559,7 @@ fun AnimatedGlowingPlus() {
 
 /**
  * Quick-access row for the 4 More Tools (Batch URL Import, Thumbnail Download, Video Info
- * Download, Comment Download), placed between the "Seal+" branding and the URL input field.
+ * Download, Comment Download), placed between the "Walrus" branding and the URL input field.
  *
  * Icon-only by design — no labels/section header — so it reads as a native strip of shortcuts
  * baked into the home screen rather than a bolted-on section. Colors reuse the same

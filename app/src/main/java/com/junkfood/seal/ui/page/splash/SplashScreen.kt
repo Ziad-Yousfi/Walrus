@@ -161,7 +161,7 @@ fun SplashScreen(
                 // Main Logo
                 Image(
                     painter = painterResource(id = R.drawable.splash_logo),
-                    contentDescription = "Seal Plus Logo",
+                    contentDescription = "Walrus Logo",
                     modifier = Modifier
                         .size(160.dp)
                         .scale(logoScale)

@@ -376,7 +376,7 @@ fun AboutSealPlusSection() {
             )
             
             Text(
-                text = "Seal Plus is the enhanced premium edition of the popular Seal video downloader. Built with modern Android architecture and featuring an exclusive gradient dark theme, it's your ultimate companion for downloading videos and audio from 1000+ platforms.",
+                text = "Walrus is the enhanced video downloader. Built with modern Android architecture and featuring an exclusive gradient dark theme, it's your ultimate companion for downloading videos and audio from 1000+ platforms.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 lineHeight = 24.sp

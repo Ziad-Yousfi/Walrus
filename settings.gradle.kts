@@ -38,6 +38,6 @@ develocity {
     }
 }
 
-rootProject.name = "Seal Plus"
+rootProject.name = "Walrus"
 include (":app")
 include(":color")
