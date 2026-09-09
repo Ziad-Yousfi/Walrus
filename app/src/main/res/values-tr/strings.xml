@@ -454,8 +454,8 @@
     <string name="issue_tracker_hint">Bir hatayla mı karşılaştınız? Bize bildirmeden önce hata kayıtlarımıza göz atmanız harika olur. Çoğu genel problemin çözümü halihazırda orada mevcut.</string>
     
     <!-- Walrus Extras -->
-    <string name="Walrus_extras">Walrus Ekstraları</string>
-    <string name="Walrus_extras_desc">Ayrıcalıklı özellikler ve gelişmiş ayarlar</string>
+    <string name="sealplus_extras">Walrus Ekstraları</string>
+    <string name="sealplus_extras_desc">Ayrıcalıklı özellikler ve gelişmiş ayarlar</string>
     <string name="network_type_restriction">Ağ kısıtlamaları</string>
     <string name="network_type_restriction_desc">İndirmeler için hangi bağlantının kullanılacağını seçin: Yalnızca Wi-Fi, yalnızca mobil veri veya fark etmez.</string>
     <string name="any_network">Fark etmez (Tüm ağlar)</string>

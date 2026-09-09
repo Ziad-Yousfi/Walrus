@@ -547,8 +547,8 @@
     <string name="retry">נסה שוב</string>
     <string name="saved_urls">קישורים שמורים</string>
     <string name="seal_plus" translatable="false">Walrus</string>
-    <string name="Walrus_extras">תוספות Walrus</string>
-    <string name="Walrus_extras_desc">תכונות פרמיום והגדרות מתקדמות</string>
+    <string name="sealplus_extras">תוספות Walrus</string>
+    <string name="sealplus_extras_desc">תכונות פרמיום והגדרות מתקדמות</string>
     <string name="security_and_privacy">אבטחה ופרטיות</string>
     <string name="security_disabled">האבטחה מושבתת</string>
     <string name="security_enabled">האבטחה מופעלת</string>

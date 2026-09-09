@@ -9,5 +9,3 @@ dependencies {
     implementation(gradleApi())
     implementation(localGroovy())
 }
-
-kotlin { jvmToolchain(21) }

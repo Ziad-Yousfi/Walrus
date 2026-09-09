@@ -487,8 +487,8 @@
     <string name="issue_tracker_hint">Encountered an error? Before reporting a new issue, please search our issue tracker. Many common problems have already been addressed and documented there.</string>
     
     <!-- Walrus Extras -->
-    <string name="Walrus_extras">Walrus Extras</string>
-    <string name="Walrus_extras_desc">Premium features and advanced settings</string>
+    <string name="sealplus_extras">Walrus Extras</string>
+    <string name="sealplus_extras_desc">Premium features and advanced settings</string>
     <string name="format_selection_layout">Format Selection Layout</string>
     <string name="format_list_view_title">Enable list view</string>
     <string name="format_list_view_desc">Switch from grid cards to a compact list layout in the format selection page</string>
