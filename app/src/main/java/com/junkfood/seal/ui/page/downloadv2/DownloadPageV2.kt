@@ -40,6 +40,7 @@ import androidx.compose.material.icons.outlined.FileDownload
 import androidx.compose.material.icons.outlined.GridView
 import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.outlined.MoreVert
+import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
@@ -243,6 +244,15 @@ fun DownloadPageV2(
             dialogViewModel.postAction(Action.ShowSheet())
         },
         onMenuOpen = onMenuOpen,
+        onRetryAll = {
+            view.slightHapticFeedback()
+            // Restart every task that is in a Canceled or Error state
+            downloader.getTaskStateMap().entries
+                .filter { (_, state) ->
+                    state.downloadState is Canceled || state.downloadState is Error
+                }
+                .forEach { (task, _) -> downloader.restart(task) }
+        },
     ) { task, action ->
         view.slightHapticFeedback()
         when (action) {
@@ -310,7 +320,7 @@ fun DownloadPageV2(
         if (sheetValue == DownloadDialogViewModel.SheetValue.Expanded) {
             showDialog = true
         } else {
-            launch { sheetState.hide() }.invokeOnCompletion { showDialog = false }
+            launch { sheetState.hide(); showDialog = false }
         }
     }
 
@@ -364,6 +374,7 @@ fun DownloadPageImplV2(
     taskDownloadStateMap: SnapshotStateMap<Task, Task.State>,
     downloadCallback: () -> Unit = {},
     onMenuOpen: (() -> Unit) = {},
+    onRetryAll: (() -> Unit) = {},
     onActionPost: (Task, UiAction) -> Unit,
 ) {
     var activeFilter by remember { mutableStateOf(Filter.All) }
@@ -389,7 +400,7 @@ fun DownloadPageImplV2(
 
     LaunchedEffect(selectedTask, taskDownloadStateMap.size) {
         if (!taskDownloadStateMap.contains(selectedTask)) {
-            selectedTask == null
+            selectedTask = null  // was: selectedTask == null (comparison, not assignment — bug)
         }
     }
 
@@ -478,19 +489,35 @@ fun DownloadPageImplV2(
                             PaddingValues(start = 20.dp, end = 20.dp, bottom = 80.dp),
                     horizontalArrangement = Arrangement.spacedBy(24.dp),
                 ) {
-                    if (filteredMap.isNotEmpty()) {
+                    // Show SubHeader whenever the FULL task map is non-empty — not just
+                    // when filteredMap is non-empty. When a filter like "Downloading" is
+                    // active and all tasks are in Canceled/Error state (e.g. after force-
+                    // stop+reopen), filteredMap becomes empty and SubHeader was hidden,
+                    // making "Retry All" completely invisible. Using the full map ensures
+                    // the SubHeader (with Retry All) is always reachable.
+                    if (taskDownloadStateMap.isNotEmpty()) {
                         item(span = { GridItemSpan(maxLineSpan) }) {
                             val videoCount =
                                 filteredMap.count {
                                     !it.value.viewState.videoFormats.isNullOrEmpty()
                                 }
+                            // derivedStateOf: only recompose SubHeader when the boolean
+                            // actually flips, not on every 200ms progress tick.
+                            val hasRetryableTasks by remember {
+                                derivedStateOf {
+                                    taskDownloadStateMap.values.any {
+                                        it.downloadState is Canceled || it.downloadState is Error
+                                    }
+                                }
+                            }
                             SubHeader(
                                 modifier = Modifier,
                                 videoCount = videoCount,
                                 audioCount = filteredMap.size - videoCount,
                                 isGridView = isGridView,
+                                hasRetryableTasks = hasRetryableTasks,
                                 onToggleView = { isGridView = !isGridView },
-                                onShowMenu = { context.makeToast(R.string.not_implemented_yet) },
+                                onRetryAll = onRetryAll,
                             )
                         }
                     }
@@ -561,7 +588,7 @@ fun DownloadPageImplV2(
             sheetState = sheetState,
             contentPadding = PaddingValues(),
             onDismissRequest = {
-                scope.launch { sheetState.hide() }.invokeOnCompletion { selectedTask = null }
+                scope.launch { sheetState.hide(); selectedTask = null }
             },
         ) {
             SheetContent(
@@ -569,7 +596,7 @@ fun DownloadPageImplV2(
                 downloadState = downloadState,
                 viewState = viewState,
                 onDismissRequest = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion { selectedTask = null }
+                    scope.launch { sheetState.hide(); selectedTask = null }
                 },
                 onActionPost = onActionPost,
             )
@@ -712,8 +739,9 @@ fun SubHeader(
     videoCount: Int = 0,
     audioCount: Int = 0,
     isGridView: Boolean = true,
+    hasRetryableTasks: Boolean = false,
     onToggleView: () -> Unit,
-    onShowMenu: () -> Unit,
+    onRetryAll: () -> Unit = {},
 ) {
     val text = buildString {
         if (videoCount > 0) {
@@ -741,6 +769,26 @@ fun SubHeader(
 
         Spacer(modifier = Modifier.weight(1f))
 
+        // Retry All — shown as a direct icon button when there are retryable tasks.
+        // Previously this was buried inside a DropdownMenu (two taps to reach).
+        // Now it is always visible as a first-class button so users can see at a
+        // glance that failed/canceled tasks can be restarted, and act immediately.
+        if (hasRetryableTasks) {
+            FilledIconButton(
+                onClick = onRetryAll,
+                modifier = Modifier.clearAndSetSemantics {}.size(32.dp),
+                colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Replay,
+                    contentDescription = stringResource(R.string.retry_all),
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Spacer(Modifier.width(4.dp))
+        }
+
         FilledIconButton(
             onClick = onToggleView,
             modifier = Modifier.clearAndSetSemantics {}.size(32.dp),
@@ -749,21 +797,6 @@ fun SubHeader(
             Icon(
                 imageVector =
                     if (isGridView) Icons.AutoMirrored.Outlined.List else Icons.Outlined.GridView,
-                contentDescription = null,
-                modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.secondary,
-            )
-        }
-
-        Spacer(Modifier.width(4.dp))
-
-        FilledIconButton(
-            onClick = onShowMenu,
-            modifier = Modifier.clearAndSetSemantics {}.size(32.dp),
-            colors = IconButtonDefaults.filledIconButtonColors(containerColor = containerColor),
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.MoreVert,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.secondary,

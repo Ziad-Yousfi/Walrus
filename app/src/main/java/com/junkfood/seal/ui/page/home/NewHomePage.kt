@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
@@ -100,6 +101,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -182,6 +184,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -209,12 +212,19 @@ fun NewHomePage(
     var urlText by remember { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    // Pre-fill URL from share intent
+    // Pre-fill URL from share intent and auto-open the download dialog.
+    // The original code only filled the text field without opening the dialog, causing the
+    // "nothing appears" bug when a URL was shared to the app — the URL silently appeared in
+    // the input box with no feedback and no dialog. Match the behavior of DownloadPageV2
+    // which calls postAction(Action.ShowSheet(...)) on share.
     val sharedUrl by dialogViewModel.sharedUrlFlow.collectAsState()
     LaunchedEffect(sharedUrl) {
         if (sharedUrl.isNotBlank()) {
             urlText = sharedUrl
             dialogViewModel.consumeSharedUrl()
+            // Auto-open the dialog with the shared URL so the user immediately sees it,
+            // rather than having to find and tap the text field.
+            dialogViewModel.postAction(Action.ShowSheet(listOf(sharedUrl)))
         }
     }
     
@@ -641,8 +651,10 @@ fun NewHomePage(
                     key = { (task, _) -> task.id }
                 ) { (task, state) ->
                     var showDetailsDialog by remember { mutableStateOf(false) }
-                    var detailsTask by remember { mutableStateOf<Task?>(null) }
-                    var detailsState by remember { mutableStateOf<Task.State?>(null) }
+                    // Combine task+state into a single holder to avoid a TOCTOU window where
+                    // two separate state writes could cause a recomposition between them —
+                    // detailsTask set but detailsState still null → NPE in DownloadDetailsDialog.
+                    var detailsInfo by remember { mutableStateOf<Pair<Task, Task.State>?>(null) }
                     var showActiveDeleteDialog by remember { mutableStateOf(false) }
                     
                     ActiveDownloadCard(
@@ -667,8 +679,7 @@ fun NewHomePage(
                                     context.makeToast(R.string.link_copied)
                                 }
                                 UiAction.ShowDetails -> {
-                                    detailsTask = task
-                                    detailsState = state
+                                    detailsInfo = task to state
                                     showDetailsDialog = true
                                 }
                                 is UiAction.OpenFile -> {
@@ -694,10 +705,11 @@ fun NewHomePage(
                         }
                     )
                     
-                    if (showDetailsDialog && detailsTask != null && detailsState != null) {
+                    val detailsSnapshot = detailsInfo
+                    if (showDetailsDialog && detailsSnapshot != null) {
                         DownloadDetailsDialog(
-                            task = detailsTask!!,
-                            state = detailsState!!,
+                            task = detailsSnapshot.first,
+                            state = detailsSnapshot.second,
                             onDismiss = { showDetailsDialog = false }
                         )
                     }
@@ -746,44 +758,79 @@ fun NewHomePage(
                     key = { it.id }
                 ) { downloadInfo ->
                     var showRecentDeleteDialog by remember { mutableStateOf(false) }
+
+                    // rememberUpdatedState ensures the lambdas below always call the LATEST
+                    // version of these closures without creating a new lambda instance on every
+                    // recomposition. This is critical: during an active download, taskStateMap
+                    // updates every ~200ms which triggers recomposition of this item. Without
+                    // rememberUpdatedState, each recomposition creates new lambda objects →
+                    // RecentDownloadCard sees its parameters as changed → fully recomposes →
+                    // the open DropdownMenu loses its composition state and dismisses.
+                    // With rememberUpdatedState, the lambda references passed to RecentDownloadCard
+                    // are stable across recompositions, so the card only recomposes when
+                    // downloadInfo itself actually changes.
+                    val currentDownloadInfo by rememberUpdatedState(downloadInfo)
+                    val currentList by rememberUpdatedState(recentFiveDownloadsFiltered)
+                    val currentLocalHiddenIds by rememberUpdatedState(localHiddenIds)
+                    
+                    val stableOnClick: () -> Unit = remember {
+                        {
+                            FileUtil.openFile(currentDownloadInfo.videoPath) {
+                                context.makeToast(R.string.file_unavailable)
+                            }
+                            Unit
+                        }
+                    }
+                    val stableOnShare: () -> Unit = remember {
+                        {
+                            view.slightHapticFeedback()
+                            val shareTitle = context.getString(R.string.share)
+                            FileUtil.createIntentForSharingFile(currentDownloadInfo.videoPath)?.let {
+                                context.startActivity(Intent.createChooser(it, shareTitle))
+                            }
+                            Unit
+                        }
+                    }
+                    val stableOnCopyLink: () -> Unit = remember {
+                        {
+                            view.slightHapticFeedback()
+                            clipboardManager.setText(AnnotatedString(currentDownloadInfo.videoUrl))
+                            context.makeToast(R.string.link_copied)
+                        }
+                    }
+                    val stableOnShowDetails: () -> Unit = remember {
+                        {
+                            view.slightHapticFeedback()
+                            val idx = currentList.indexOfFirst { it.id == currentDownloadInfo.id }
+                            detailsDialogIndex = if (idx >= 0) idx else 0
+                        }
+                    }
+                    val stableOnDelete: () -> Unit = remember {
+                        {
+                            view.slightHapticFeedback()
+                            showRecentDeleteDialog = true
+                        }
+                    }
+                    val stableOnHide: () -> Unit = remember {
+                        {
+                            view.slightHapticFeedback()
+                            localHiddenIds = currentLocalHiddenIds + currentDownloadInfo.id
+                            scope.launch(Dispatchers.IO) {
+                                DatabaseUtil.hideItem(currentDownloadInfo)
+                            }
+                            Unit
+                        }
+                    }
                     
                     RecentDownloadCard(
                         downloadInfo = downloadInfo,
                         refreshKey = lifecycleRefreshTrigger,
-                        onClick = {
-                            FileUtil.openFile(downloadInfo.videoPath) {
-                                context.makeToast(R.string.file_unavailable)
-                            }
-                        },
-                        onShare = {
-                            view.slightHapticFeedback()
-                            val shareTitle = context.getString(R.string.share)
-                            FileUtil.createIntentForSharingFile(downloadInfo.videoPath)?.let {
-                                context.startActivity(Intent.createChooser(it, shareTitle))
-                            }
-                        },
-                        onCopyLink = {
-                            view.slightHapticFeedback()
-                            clipboardManager.setText(AnnotatedString(downloadInfo.videoUrl))
-                            context.makeToast(R.string.link_copied)
-                        },
-                        onShowDetails = {
-                            view.slightHapticFeedback()
-                            val idx = recentFiveDownloadsFiltered.indexOfFirst { it.id == downloadInfo.id }
-                            detailsDialogIndex = if (idx >= 0) idx else 0
-                        },
-                        onDelete = {
-                            view.slightHapticFeedback()
-                            showRecentDeleteDialog = true
-                        },
-                        onHide = {
-                            view.slightHapticFeedback()
-                            // Optimistically remove from UI immediately, then persist to DB
-                            localHiddenIds = localHiddenIds + downloadInfo.id
-                            scope.launch(Dispatchers.IO) {
-                                DatabaseUtil.hideItem(downloadInfo)
-                            }
-                        }
+                        onClick = stableOnClick,
+                        onShare = stableOnShare,
+                        onCopyLink = stableOnCopyLink,
+                        onShowDetails = stableOnShowDetails,
+                        onDelete = stableOnDelete,
+                        onHide = stableOnHide,
                     )
                     
                     if (showRecentDeleteDialog) {
@@ -806,15 +853,20 @@ fun NewHomePage(
                             confirmButton = {
                                 ConfirmButton {
                                     showRecentDeleteDialog = false
-                                    localHiddenIds = localHiddenIds + downloadInfo.id
+                                    // Use currentDownloadInfo and currentLocalHiddenIds
+                                    // (from rememberUpdatedState) so we always act on the
+                                    // latest item data — not a stale snapshot captured
+                                    // when this lambda was first composed.
+                                    val info = currentDownloadInfo
+                                    localHiddenIds = currentLocalHiddenIds + info.id
                                     scope.launch(Dispatchers.IO) {
                                         val baseName =
-                                            File(downloadInfo.videoPath)
+                                            File(info.videoPath)
                                                 .nameWithoutExtension
-                                                .ifEmpty { downloadInfo.videoTitle }
-                                        FileUtil.deleteTempFilesForTask(baseName, downloadInfo.videoId)
+                                                .ifEmpty { info.videoTitle }
+                                        FileUtil.deleteTempFilesForTask(baseName, info.videoId)
                                         DatabaseUtil.deleteInfoList(
-                                            infoList = listOf(downloadInfo),
+                                            infoList = listOf(info),
                                             deleteFile = false
                                         )
                                     }
@@ -867,15 +919,18 @@ fun NewHomePage(
         if (sheetValue == DownloadDialogViewModel.SheetValue.Expanded) {
             showDialog = true
         } else {
-            launch { sheetState.hide() }.invokeOnCompletion { showDialog = false }
+            launch { sheetState.hide(); showDialog = false }
         }
     }
     
+    // Config() reads MMKV preferences — memoize it to avoid 5 MMKV reads/sec during
+    // active downloads when the 200ms progress throttle triggers recompositions.
+    val dialogConfig = remember { Config() }
     if (showDialog) {
         DownloadDialog(
             state = dialogState,
             sheetState = sheetState,
-            config = Config(),
+            config = dialogConfig,
             preferences = preferences,
             onPreferencesUpdate = { preferences = it },
             onActionPost = { dialogViewModel.postAction(it) },
@@ -2148,26 +2203,26 @@ private fun RecentDownloadDetailsContent(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    // Extract resolution from video file
-                    val resolution = remember(downloadInfo.videoPath) {
-                        try {
-                            if (file.exists()) {
-                                val retriever = android.media.MediaMetadataRetriever()
-                                retriever.setDataSource(downloadInfo.videoPath)
-                                val width = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
-                                val height = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
-                                retriever.release()
-                                
-                                if (width != null && height != null) {
-                                    "${width}x${height}"
-                                } else {
-                                    "N/A"
-                                }
-                            } else {
+                    // Extract resolution from video file.
+                    // Uses produceState + Dispatchers.IO so the blocking MediaMetadataRetriever
+                    // call never runs on the main thread (avoids ANR / frame drops on large
+                    // files or slow storage). try/finally guarantees release() even if
+                    // setDataSource() throws (minSdk=24, AutoCloseable added in API 29).
+                    val resolution by produceState(initialValue = "N/A", key1 = downloadInfo.videoPath) {
+                        value = withContext(Dispatchers.IO) {
+                            val retriever = android.media.MediaMetadataRetriever()
+                            try {
+                                if (file.exists()) {
+                                    retriever.setDataSource(downloadInfo.videoPath)
+                                    val width = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_WIDTH)
+                                    val height = retriever.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_VIDEO_HEIGHT)
+                                    if (width != null && height != null) "${width}x${height}" else "N/A"
+                                } else "N/A"
+                            } catch (e: Exception) {
                                 "N/A"
+                            } finally {
+                                retriever.release()
                             }
-                        } catch (e: Exception) {
-                            "N/A"
                         }
                     }
                     

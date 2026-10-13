@@ -2,6 +2,7 @@ package com.junkfood.seal.ui.page.settings
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
@@ -78,10 +79,14 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
         )
     }
     val batteryIntent = remember { BatteryUtil.buildBatterySettingsIntent(context) }
+    // BatteryUtil.isIntentResolvable() correctly handles Android 11+ package visibility:
+    // on API 33+ it uses ResolveInfoFlags.of(0L) (the new non-deprecated overload), and on
+    // all versions it wraps the call in try-catch so a SecurityException doesn't crash.
+    // The old raw resolveActivity(batteryIntent, 0) silently returned null on API 30+ for
+    // apps without <queries> manifest entries, permanently hiding the battery hint card.
     val isActivityAvailable: Boolean = remember {
-        if (Build.VERSION.SDK_INT < 23) false
-        else context.packageManager
-            .resolveActivity(batteryIntent, 0) != null
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) false
+        else BatteryUtil.isIntentResolvable(context, batteryIntent)
     }
 
     val launcher =
@@ -138,7 +143,19 @@ fun SettingsPage(onNavigateBack: () -> Unit, onNavigateTo: (String) -> Unit) {
                             icon = Icons.Rounded.EnergySavingsLeaf,
                             description = stringResource(R.string.battery_configuration_desc),
                         ) {
-                            launcher.launch(batteryIntent)
+                            // Try-catch: OEM intents can throw SecurityException at launch
+                            // even when resolveActivity() returned non-null (e.g. HarmonyOS 4.x).
+                            // Fall back to the standard Android battery settings if that happens.
+                            runCatching {
+                                launcher.launch(batteryIntent)
+                            }.onFailure { oemErr ->
+                                Log.w("SettingsPage", "OEM battery intent failed, using fallback: ${oemErr.message}")
+                                runCatching {
+                                    launcher.launch(BatteryUtil.buildStandardBatteryIntent(context))
+                                }.onFailure { fallbackErr ->
+                                    Log.e("SettingsPage", "Fallback battery intent also failed: ${fallbackErr.message}")
+                                }
+                            }
                         }
                     }
                 }

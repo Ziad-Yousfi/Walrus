@@ -198,7 +198,15 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
         ) {
             it?.let { uri ->
                 App.updateDownloadDir(uri, editingDirectory)
-                if (editingDirectory != Directory.SDCARD) {
+                // Handle the SD card case outside the getRealPath() call since SD card
+                // URIs are content:// URIs that must be stored as-is, not converted to
+                // a file-system path. The old code had Directory.SDCARD inside an
+                // `if (editingDirectory != Directory.SDCARD)` guard — making that branch
+                // unreachable dead code. Fixed: SD card URI update is now handled first,
+                // before the path-based branches.
+                if (editingDirectory == Directory.SDCARD) {
+                    sdcardUri = uri.toString()
+                } else {
                     val path = FileUtil.getRealPath(uri)
                     when (editingDirectory) {
                         Directory.AUDIO -> {
@@ -209,13 +217,11 @@ fun DownloadDirectoryPreferences(onNavigateBack: () -> Unit) {
                             videoDirectoryText = path
                         }
 
-                        Directory.SDCARD -> {
-                            sdcardUri = uri.toString()
-                        }
-
                         Directory.CUSTOM_COMMAND -> {
                             customCommandDirectory = path
                         }
+
+                        else -> { /* SDCARD handled above */ }
                     }
                 }
             }
@@ -584,10 +590,20 @@ fun OutputTemplateDialog(
                             OutlinedTextField(
                                 value = editingTemplate,
                                 onValueChange = {
+                                    // Relaxed validation:
+                                    // 1. Template must reference %(title in some form
+                                    //    (e.g. %(title)s, %(title).200B, %(title).100B, etc.)
+                                    //    so the output file name is meaningful.
+                                    // 2. Template must contain %(ext)s somewhere so the
+                                    //    file gets a proper extension.
+                                    // We do NOT require the exact %(title).200B constant or
+                                    // force .%(ext)s to be at the very end — both are too
+                                    // strict and block perfectly valid yt-dlp templates like
+                                    // %(uploader)s - %(title)s.%(ext)s.
                                     error =
-                                        if (!it.contains(DownloadUtil.BASENAME)) {
+                                        if (!it.contains("%(title")) {
                                             1
-                                        } else if (!it.endsWith(DownloadUtil.EXTENSION)) {
+                                        } else if (!it.contains(DownloadUtil.EXTENSION)) {
                                             2
                                         } else {
                                             0
@@ -597,7 +613,11 @@ fun OutputTemplateDialog(
                                 isError = error != 0,
                                 supportingText = {
                                     Text(
-                                        "Required: ${DownloadUtil.BASENAME}, ${DownloadUtil.EXTENSION}",
+                                        when (error) {
+                                            1 -> "Must contain: %(title)s or %(title).200B"
+                                            2 -> "Must contain: ${DownloadUtil.EXTENSION}"
+                                            else -> "Example: %(uploader)s - %(title)s${DownloadUtil.EXTENSION}"
+                                        },
                                         fontFamily = FontFamily.Monospace,
                                     )
                                 },
