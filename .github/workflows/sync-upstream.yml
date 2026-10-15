@@ -61,7 +61,11 @@ jobs:
 
           # -X ours merges all upstream changes, bug fixes and dependency updates,
           # while automatically resolving any conflicting lines in favor of Walrus customizations (name, removed popups, icons).
-          if git merge upstream/"$UPSTREAM_BRANCH" -X ours -m "chore(sync): merge upstream updates from MaheshTechnicals/Sealplus [skip ci]"; then
+          if git merge upstream/"$UPSTREAM_BRANCH" -X ours --no-commit --no-ff; then
+            # GITHUB_TOKEN pushes can be rejected when workflow files are modified.
+            # Keep local workflow definitions and sync all other upstream changes.
+            git restore --source=HEAD --staged --worktree .github/workflows || true
+            git commit -m "chore(sync): merge upstream updates from MaheshTechnicals/Sealplus [skip ci]"
             echo "Merge successful without conflict."
             echo "status=success" >> "$GITHUB_OUTPUT"
           else
