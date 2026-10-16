@@ -3,6 +3,9 @@ name: Build Release APK
 on:
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -26,26 +29,45 @@ jobs:
         build-scan-terms-of-use-url: "https://gradle.com/help/legal-terms-of-use"
         build-scan-terms-of-use-agree: "yes"
 
-    # --- NAYA STEP: Keystore Decode Karna ---
-    - name: Decode Keystore
+    - name: Prepare Signing Keystore
       env:
         ANDROID_SIGNING_KEY: ${{ secrets.ANDROID_SIGNING_KEY }}
-      run: |
-        echo "? Decoding Key..."
-        echo "$ANDROID_SIGNING_KEY" | tr -d '\n\r ' | base64 --decode > "${{ github.workspace }}/Mahesh.jks"
-
-    # --- UPDATED STEP: Fast Build aur Native Signing Ek Sath ---
-    - name: Build and Sign Release APKs
-      env:
         ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         ANDROID_ALIAS: ${{ secrets.ANDROID_ALIAS }}
         ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
       run: |
+        KEYSTORE_PATH="${{ github.workspace }}/walrus-release.jks"
+        if [ -n "$ANDROID_SIGNING_KEY" ] && [ -n "$ANDROID_KEYSTORE_PASSWORD" ]; then
+          echo "Using configured repository signing key from secrets..."
+          echo "$ANDROID_SIGNING_KEY" | tr -d '\n\r ' | base64 --decode > "$KEYSTORE_PATH"
+          echo "SIGNING_STORE_FILE=$KEYSTORE_PATH" >> $GITHUB_ENV
+          echo "SIGNING_STORE_PASSWORD=$ANDROID_KEYSTORE_PASSWORD" >> $GITHUB_ENV
+          echo "SIGNING_KEY_ALIAS=${ANDROID_ALIAS:-walrus}" >> $GITHUB_ENV
+          echo "SIGNING_KEY_PASSWORD=${ANDROID_KEY_PASSWORD:-$ANDROID_KEYSTORE_PASSWORD}" >> $GITHUB_ENV
+        else
+          echo "No signing secret found in fork repository. Generating a dedicated Walrus release key..."
+          keytool -genkeypair -v \
+            -keystore "$KEYSTORE_PATH" \
+            -alias walrus \
+            -keyalg RSA \
+            -keysize 2048 \
+            -validity 10000 \
+            -storepass "walrus_release_key_2026" \
+            -keypass "walrus_release_key_2026" \
+            -dname "CN=Walrus, OU=WalrusApp, O=Walrus, L=Default, S=Default, C=US"
+          echo "SIGNING_STORE_FILE=$KEYSTORE_PATH" >> $GITHUB_ENV
+          echo "SIGNING_STORE_PASSWORD=walrus_release_key_2026" >> $GITHUB_ENV
+          echo "SIGNING_KEY_ALIAS=walrus" >> $GITHUB_ENV
+          echo "SIGNING_KEY_PASSWORD=walrus_release_key_2026" >> $GITHUB_ENV
+        fi
+
+    - name: Build and Sign Release APKs
+      run: |
         ./gradlew assembleRelease --parallel --build-cache --no-daemon \
-          -Pandroid.injected.signing.store.file="${{ github.workspace }}/Mahesh.jks" \
-          -Pandroid.injected.signing.store.password="$ANDROID_KEYSTORE_PASSWORD" \
-          -Pandroid.injected.signing.key.alias="$ANDROID_ALIAS" \
-          -Pandroid.injected.signing.key.password="$ANDROID_KEY_PASSWORD"
+          -Pandroid.injected.signing.store.file="$SIGNING_STORE_FILE" \
+          -Pandroid.injected.signing.store.password="$SIGNING_STORE_PASSWORD" \
+          -Pandroid.injected.signing.key.alias="$SIGNING_KEY_ALIAS" \
+          -Pandroid.injected.signing.key.password="$SIGNING_KEY_PASSWORD"
 
     - name: Get version name
       id: version
