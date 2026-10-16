@@ -491,6 +491,8 @@
     <!-- Walrus Extras -->
     <string name="Walrus_extras">Walrus Extras</string>
     <string name="Walrus_extras_desc">Premium features and advanced settings</string>
+    <string name="sealplus_extras">Walrus Extras</string>
+    <string name="sealplus_extras_desc">Premium features and advanced settings</string>
     <string name="format_selection_layout">Format Selection Layout</string>
     <string name="format_list_view_title">Enable list view</string>
     <string name="format_list_view_desc">Switch from grid cards to a compact list layout in the format selection page</string>
@@ -769,4 +771,3 @@
     <string name="no_comments_available">No comments to show</string>
     <string name="more_comments_export_hint">+%1$d more comments — export to view all</string>
 </resources>
-
