@@ -536,13 +536,18 @@ fun OutputTemplateDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {
             ConfirmButton(enabled = error == 0) {
+                // A custom template without an extension gets ".%(ext)s" appended, so
+                // "%(uploader)s - %(title)s" saves as a valid file name.
+                val custom =
+                    if (editingTemplate.contains("%(ext")) editingTemplate
+                    else editingTemplate + DownloadUtil.EXTENSION
                 onConfirm(
                     when (selectedItem) {
                         1 -> DownloadUtil.OUTPUT_TEMPLATE_DEFAULT
                         2 -> DownloadUtil.OUTPUT_TEMPLATE_ID
-                        else -> editingTemplate
+                        else -> custom
                     },
-                    editingTemplate,
+                    custom,
                 )
             }
         },

@@ -45,6 +45,7 @@ import androidx.compose.material.icons.outlined.Cancel
 import androidx.compose.material.icons.outlined.CalendarToday
 import androidx.compose.material.icons.outlined.Chat
 import androidx.compose.material.icons.outlined.ContentPaste
+import androidx.compose.material.icons.outlined.Replay
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.ExitToApp
@@ -612,7 +613,7 @@ fun NewHomePage(
                     onDownloadClick = {
                         if (urlText.isNotBlank()) {
                             view.slightHapticFeedback()
-                            dialogViewModel.postAction(Action.ShowSheet(listOf(urlText)))
+                            dialogViewModel.startDownload(listOf(urlText))
                             urlText = ""
                             keyboardController?.hide()
                         } else {
@@ -636,11 +637,48 @@ fun NewHomePage(
             // tasks are Completed and already present in the DB-backed section.
             if (activeDownloads.isNotEmpty() || recentFiveDownloadsFiltered.isNotEmpty()) {
                 item {
-                    Text(
-                        text = stringResource(R.string.recent_downloads),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.SemiBold
-                    )
+                    // Retry All lives here too, so canceled/failed tasks can be restarted from
+                    // the home screen without opening the Downloads page.
+                    val hasRetryableTasks by remember {
+                        derivedStateOf {
+                            taskStateMap.values.any {
+                                it.downloadState is Task.DownloadState.Canceled ||
+                                    it.downloadState is Task.DownloadState.Error
+                            }
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.recent_downloads),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.SemiBold,
+                            modifier = Modifier.weight(1f),
+                        )
+                        if (hasRetryableTasks) {
+                            IconButton(
+                                onClick = {
+                                    view.slightHapticFeedback()
+                                    // Restart every task in a Canceled or Error state.
+                                    taskStateMap.entries
+                                        .filter { (_, state) ->
+                                            state.downloadState is Task.DownloadState.Canceled ||
+                                                state.downloadState is Task.DownloadState.Error
+                                        }
+                                        .map { it.key }
+                                        .forEach { downloader.restart(it) }
+                                },
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Outlined.Replay,
+                                    contentDescription = stringResource(R.string.retry_all),
+                                    tint = MaterialTheme.colorScheme.primary,
+                                )
+                            }
+                        }
+                    }
                 }
             }
             
