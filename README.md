@@ -436,7 +436,7 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 
 #### 🚀 Major Release - Revolutionary Download Management
 
-**⚠️ IMPORTANT:** Package name changed to `com.maheshtechnicals.sealplus`. Uninstall old app before installing v2.0.
+**⚠️ IMPORTANT:** Package name changed to `com.walrus.app`. Uninstall old app before installing v2.0.
 
 #### ⏯️ Download Control & Management
 - ✅ **Pause and Resume** - Control downloads from menu and cards

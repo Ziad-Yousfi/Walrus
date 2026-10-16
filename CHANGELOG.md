@@ -895,7 +895,7 @@ Download the appropriate APK for your device:
 
 ### 🚀 Major Release - Revolutionary Download Management
 
-**Package Name Changed:** `com.maheshtechnicals.sealplus`
+**Package Name Changed:** `com.walrus.app`
 
 ⚠️ **Important Note:** App package name has changed. Please uninstall the old app and install this new version. If using auto-update feature, download the new version from the app, install it, then remove the old app.
 
