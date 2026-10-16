@@ -107,7 +107,19 @@ jobs:
       - name: Push to main
         if: steps.do_merge.outputs.status == 'success'
         run: |
-          git push origin main
+          for attempt in 1 2 3; do
+            if git push origin main; then
+              exit 0
+            fi
+            if [ "$attempt" -eq 3 ]; then
+              break
+            fi
+            echo "Push rejected (attempt $attempt). Rebasing onto latest origin/main and retrying..."
+            git fetch origin main
+            git rebase origin/main || { git rebase --abort || true; exit 1; }
+          done
+          echo "Push failed after 3 attempts."
+          exit 1
 
       - name: Handle Conflicts via Branch & PR
         if: steps.do_merge.outputs.status == 'conflict'
