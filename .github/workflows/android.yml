@@ -127,44 +127,40 @@ jobs:
 
     - name: Prepare Release Notes
       id: notes
+      env:
+        CUSTOM_NOTES: ${{ github.event.inputs.release_notes }}
+        RELEASE_TITLE_INPUT: ${{ github.event.inputs.release_title }}
+        APP_VERSION: ${{ steps.version.outputs.VERSION }}
       run: |
-        TITLE="${{ github.event.inputs.release_title }}"
+        TITLE="$RELEASE_TITLE_INPUT"
         if [ -z "$TITLE" ]; then
-          TITLE="Walrus v${{ steps.version.outputs.VERSION }}"
+          TITLE="Walrus v${APP_VERSION}"
         fi
         echo "RELEASE_TITLE=${TITLE}" >> $GITHUB_OUTPUT
 
-        if [ -n "${{ github.event.inputs.release_notes }}" ]; then
-          cat << 'EOF' > release_body.md
-${{ github.event.inputs.release_notes }}
-EOF
+        if [ -n "$CUSTOM_NOTES" ]; then
+          printf '%s\n' "$CUSTOM_NOTES" > release_body.md
         else
-          cat << 'EOF' > release_body.md
-## ✨ Walrus v${{ steps.version.outputs.VERSION }}
-
----
-
-### 🌟 Highlights
-* Customized release of **Walrus** by **fernstack**.
-* Up-to-date yt-dlp core extractor engines.
-* Enhanced UI, stability, and download capabilities.
-
-### 📦 Installation
-Download the appropriate APK for your device:
-- **Universal APK**: Compatible with all devices (recommended)
-- **arm64-v8a**: For 64-bit ARM devices (most modern phones)
-- **armeabi-v7a**: For 32-bit ARM devices
-- **x86_64**: For 64-bit x86 devices / emulators
-- **x86**: For 32-bit x86 devices / emulators
-
-### 📜 Source & Details
-- Repository: [Ziad-Yousfi/Walrus](https://github.com/Ziad-Yousfi/Walrus)
-- Developer: [fernstack](https://github.com/Ziad-Yousfi)
-
----
-*Built on: ${{ github.event.head_commit.timestamp || 'Manual Trigger' }}*
-*Commit: ${{ github.sha }}*
-EOF
+          {
+            echo "## ✨ Walrus v${APP_VERSION}"
+            echo ""
+            echo "### 🌟 Highlights"
+            echo "* Customized release of **Walrus** by **fernstack**."
+            echo "* Up-to-date yt-dlp core extractor engines."
+            echo "* Enhanced UI, stability, and download capabilities."
+            echo ""
+            echo "### 📦 Installation"
+            echo "Download the appropriate APK for your device:"
+            echo "- **Universal APK**: Compatible with all devices (recommended)"
+            echo "- **arm64-v8a**: For 64-bit ARM devices (most modern phones)"
+            echo "- **armeabi-v7a**: For 32-bit ARM devices"
+            echo "- **x86_64**: For 64-bit x86 devices / emulators"
+            echo "- **x86**: For 32-bit x86 devices / emulators"
+            echo ""
+            echo "---"
+            echo "*Repository: [Ziad-Yousfi/Walrus](https://github.com/Ziad-Yousfi/Walrus)*"
+            echo "*Developer: [fernstack](https://github.com/Ziad-Yousfi)*"
+          } > release_body.md
         fi
 
     - name: Create Release
