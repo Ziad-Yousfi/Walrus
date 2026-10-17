@@ -67,6 +67,8 @@ jobs:
             git restore --source=HEAD --staged --worktree \
               .gitattributes \
               README.md \
+              CONTRIBUTING.md \
+              CODE_OF_CONDUCT.md \
               app/src/main/java/com/junkfood/seal/ui/page/splash/SplashScreen.kt \
               app/src/main/java/com/junkfood/seal/ui/page/settings/about \
               app/src/main/java/com/junkfood/seal/ui/page/settings/troubleshooting/TroubleshootingPage.kt \

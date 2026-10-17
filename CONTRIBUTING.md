@@ -1,54 +1,64 @@
-# Contributing
+# Contributing to Walrus
 
-Before reading, you may know what [yt-dlp](https://github.com/yt-dlp/yt-dlp) is and what it does. In short, it's a CLI (Command Line Interface) program written in python, which lets you download videos from [1000+ websites](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md).
+Thank you for your interest in contributing to **Walrus**! We welcome bug reports, feature requests, code contributions, and translations.
 
-For bug reports and feature requests, please search in issues first (including the closed ones). If there're no duplicates, feel free to [submit an issue](https://github.com/JunkFood02/Seal/issues/new) with an issue template.
+---
 
-**We'll probably ignore and close your issue if it's not using the existing templates or doesn't contain sufficient description.**
+## 🐛 Bug Reports & Feature Requests
 
-For questions or any other ideas to improve, you can join our official [Telegram group](https://t.me/seal_app_group) or [Matrix space](https://matrix.to/#/#seal-space:matrix.org).
+Before creating a new report, please check the [existing issues](https://github.com/Ziad-Yousfi/Walrus/issues) to avoid duplicates.
 
+- **Bug Reports**: When submitting a bug, please include:
+  - Device model & Android OS version
+  - Walrus app version and build variant (e.g. arm64-v8a)
+  - Clear steps to reproduce the issue
+  - URL of the media being tested (if applicable)
+  - Relevant logs or stack traces
+- **Feature Requests**: We welcome ideas for new tools, UI improvements, and workflow enhancements. Note that download-level platform support is governed by [yt-dlp](https://github.com/yt-dlp/yt-dlp).
 
-## Disclaimer
+Open a new report via [GitHub Issues](https://github.com/Ziad-Yousfi/Walrus/issues/new).
 
-This is a toy project I use to learn Android development. Please do not have any expectations or assumptions about the quality of the code.
+---
 
+## 💻 Pull Requests & Code Contributions
 
-## Bug Report
+1. **Discuss First**: For major changes or architectural additions, please open an issue first to discuss the implementation plan.
+2. **Branching**:
+   - Create your feature or bugfix branch off `main`: `git checkout -b feature/my-feature`
+   - Open your Pull Request targeting the **`main`** branch.
+3. **Commit Standards**:
+   - Write clear, concise commit messages following standard conventions (e.g., `feat: ...`, `fix: ...`, `chore: ...`).
+4. **Code Quality**:
+   - Maintain idiomatic Kotlin and Jetpack Compose best practices.
+   - Test your changes thoroughly on physical devices or emulators before submitting.
 
-When submitting a bug report, please make sure your issue contains **enough** information for reproducing the problem, including the options or the custom command being used, the link to the video, and other fields in the issue template.
+---
 
+## 🛠️ Building From Source
 
+### Requirements
+- **JDK 17** or higher
+- **Android Studio** Ladybug (or newer)
+- **Android SDK** API 24 to API 37
 
-## Feature Request
+### Build Commands
+```bash
+# Clone the repository
+git clone https://github.com/Ziad-Yousfi/Walrus.git
+cd Walrus
 
-Seal is and will remain a simple GUI for yt-dlp, providing most of the functionality of yt-dlp as is, without modifications. Thus, **we'll not take requests for features that yt-dlp does not support.**
+# Compile Kotlin & run checks
+./gradlew compileGenericDebugKotlin
 
-The app has two download modes: 
+# Assemble Debug APK
+./gradlew assembleGenericDebug
 
-- General mode: Save as audio, download playlist, and many other options that can be used individually or combined for normal download tasks. Once the download is complete, Seal will scan the files into the system media library, and store them in the download history.
-- Custom command mode: For advanced usage of yt-dlp, a user can create and store multiple command templates in the app, then select and use one of them directly to execute the yt-dlp command like in a terminal. In this mode, all of the GUI options and features in the general mode will be disabled.
+# Assemble Release APK
+./gradlew assembleGenericRelease
+```
 
-Since most of the functions can be implemented in custom command mode, the "feature request" would be treated as adding a shortcut to the general mode. However, not all feature requests will be accepted and implemented in the app. [Why not add an option for that?](https://neugierig.org/software/blog/2018/07/options.html)
+---
 
+## 🌍 Translations
 
-
-## Pull Request
-
-If you wish to contribute to the project by submitting code directly, please first leave a comment under the relevant issue or file a new issue, describe the changes you are about to make.
-
-To avoid multiple pull requests resolving the same issue, let others know you are working on it by saying so in a comment, or ask the issue to be assigned to yourself.
-
-**Important: All pull requests must target the `test` branch, not `main`.** Please make sure your base branch is set to `test` when opening a pull request. Pull requests submitted against `main` will not be accepted and will be asked to be redirected to `test`.
-
-
-
-## New contributors
-
-Scan through our [existing issues](https://github.com/JunkFood02/Seal/issues) to find one that interests you. The [👋 good first issue](https://github.com/JunkFood02/Seal/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) is a good place to start exploring issues that are up-for-grab for newcomers. (Do not hesitate to ask for more details or clarifying questions on the issue!)
-
-
-
-## Building From Source
-
-Fork this project, import and compile it with the latest version of [Android Studio Canary](https://developer.android.com/studio/preview). 
+Walrus supports many languages thanks to the global open-source community. If you would like to help translate Walrus into your language, feel free to submit PRs modifying the corresponding `app/src/main/res/values-*/strings.xml` or documentation files in `translations/`.
