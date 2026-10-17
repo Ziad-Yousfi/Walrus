@@ -20,10 +20,14 @@ sealed class Version(val major: Int, val minor: Int, val patch: Int, val build: 
             get() = major * MAJOR + minor * MINOR + patch * PATCH + build * BUILD + BETA
     }
 
-    class Stable(versionMajor: Int, versionMinor: Int, versionPatch: Int) :
-        Version(versionMajor, versionMinor, versionPatch) {
+    class Stable(
+        versionMajor: Int,
+        versionMinor: Int,
+        versionPatch: Int,
+        versionBuild: Int = 0,
+    ) : Version(versionMajor, versionMinor, versionPatch, versionBuild) {
         override val name: String
-            get() = "${major}.${minor}.${patch}"
+            get() = if (build > 0) "${major}.${minor}.${patch}.${build}" else "${major}.${minor}.${patch}"
 
         override val code: Long
             get() = major * MAJOR + minor * MINOR + patch * PATCH + build * BUILD + STABLE
@@ -57,4 +61,4 @@ private const val BETA = VARIANT * 2
 private const val RELEASE_CANDIDATE = VARIANT * 3
 
 val currentVersion: Version =
-    Version.Stable(versionMajor = 3, versionMinor = 1, versionPatch = 0)
+    Version.Stable(versionMajor = 3, versionMinor = 1, versionPatch = 0, versionBuild = 1)

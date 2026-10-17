@@ -2,6 +2,24 @@ name: Build Release APK
 
 on:
   workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version Name override (e.g. 3.1.0.1, or leave empty to use Version.kt)'
+        required: false
+        default: ''
+      release_title:
+        description: 'Release Title override (optional)'
+        required: false
+        default: ''
+      release_notes:
+        description: 'Custom Release Notes in Markdown (optional)'
+        required: false
+        default: ''
+      publish_release:
+        description: 'Publish as GitHub Release? (Uncheck for artifacts only)'
+        type: boolean
+        required: false
+        default: true
 
 permissions:
   contents: write
@@ -61,40 +79,93 @@ jobs:
           echo "SIGNING_KEY_PASSWORD=walrus_release_key_2026" >> $GITHUB_ENV
         fi
 
+    - name: Determine Version
+      id: version
+      run: |
+        if [ -n "${{ github.event.inputs.version_name }}" ]; then
+          VERSION="${{ github.event.inputs.version_name }}"
+          echo "Using version override from inputs: ${VERSION}"
+        else
+          chmod +x ./gradlew
+          VERSION=$(./gradlew -q :app:printVersionName | tail -n 1 | tr -d '\r\n')
+          echo "Using version resolved by Gradle: ${VERSION}"
+        fi
+        echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
+
     - name: Build and Sign Release APKs
       run: |
         ./gradlew assembleRelease --parallel --build-cache --no-daemon \
           -Pandroid.injected.signing.store.file="$SIGNING_STORE_FILE" \
           -Pandroid.injected.signing.store.password="$SIGNING_STORE_PASSWORD" \
           -Pandroid.injected.signing.key.alias="$SIGNING_KEY_ALIAS" \
-          -Pandroid.injected.signing.key.password="$SIGNING_KEY_PASSWORD"
-
-    - name: Get version name
-      id: version
-      run: |
-        VERSION=$(grep -A 1 'val currentVersion: Version =' buildSrc/src/main/kotlin/Version.kt | grep -oP 'versionMajor = \K\d+' | head -1).$(grep -A 1 'val currentVersion: Version =' buildSrc/src/main/kotlin/Version.kt | grep -oP 'versionMinor = \K\d+' | head -1).$(grep -A 1 'val currentVersion: Version =' buildSrc/src/main/kotlin/Version.kt | grep -oP 'versionPatch = \K\d+' | head -1)
-        echo "VERSION=${VERSION}" >> $GITHUB_OUTPUT
-        echo "Version: ${VERSION}"
+          -Pandroid.injected.signing.key.password="$SIGNING_KEY_PASSWORD" \
+          -PcustomVersionName="${{ steps.version.outputs.VERSION }}"
 
     - name: Read release configuration
       id: release_config
       run: |
-        SHOULD_RELEASE=$(jq -r '.release' release.json)
+        if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ github.event.inputs.publish_release }}" ]; then
+          SHOULD_RELEASE="${{ github.event.inputs.publish_release }}"
+        else
+          SHOULD_RELEASE=$(jq -r '.release' release.json)
+        fi
         echo "SHOULD_RELEASE=${SHOULD_RELEASE}" >> $GITHUB_OUTPUT
         echo "Release flag: ${SHOULD_RELEASE}"
         if [ "${SHOULD_RELEASE}" = "true" ]; then
-          echo "? Release will be published"
+          echo "✨ Release will be published"
         else
-          echo "?? Release publishing is disabled - APKs will be uploaded as artifacts only"
+          echo "📦 Release publishing is disabled - APKs will be uploaded as artifacts only"
         fi
 
     - name: List all APK files for debugging
       run: |
-        echo "? All APK files in output directory:"
+        echo "📦 All APK files in output directory:"
         find app/build/outputs/apk -name "*.apk" -type f -exec ls -lh {} \;
         echo ""
-        echo "? Directory structure:"
+        echo "📁 Directory structure:"
         ls -R app/build/outputs/apk/
+
+    - name: Prepare Release Notes
+      id: notes
+      run: |
+        TITLE="${{ github.event.inputs.release_title }}"
+        if [ -z "$TITLE" ]; then
+          TITLE="Walrus v${{ steps.version.outputs.VERSION }}"
+        fi
+        echo "RELEASE_TITLE=${TITLE}" >> $GITHUB_OUTPUT
+
+        if [ -n "${{ github.event.inputs.release_notes }}" ]; then
+          cat << 'EOF' > release_body.md
+${{ github.event.inputs.release_notes }}
+EOF
+        else
+          cat << 'EOF' > release_body.md
+## ✨ Walrus v${{ steps.version.outputs.VERSION }}
+
+---
+
+### 🌟 Highlights
+* Customized release of **Walrus** by **fernstack**.
+* Up-to-date yt-dlp core extractor engines.
+* Enhanced UI, stability, and download capabilities.
+
+### 📦 Installation
+Download the appropriate APK for your device:
+- **Universal APK**: Compatible with all devices (recommended)
+- **arm64-v8a**: For 64-bit ARM devices (most modern phones)
+- **armeabi-v7a**: For 32-bit ARM devices
+- **x86_64**: For 64-bit x86 devices / emulators
+- **x86**: For 32-bit x86 devices / emulators
+
+### 📜 Source & Details
+- Repository: [Ziad-Yousfi/Walrus](https://github.com/Ziad-Yousfi/Walrus)
+- Developer: [fernstack](https://github.com/Ziad-Yousfi)
+
+---
+*Built on: ${{ github.event.head_commit.timestamp || 'Manual Trigger' }}*
+*Commit: ${{ github.sha }}*
+EOF
+        fi
 
     - name: Create Release
       if: steps.release_config.outputs.SHOULD_RELEASE == 'true'
@@ -103,53 +174,8 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: v${{ steps.version.outputs.VERSION }}
-        name: Walrus v${{ steps.version.outputs.VERSION }}
-        body: |
-          ## ✨ Walrus v3.1.0 - Retry All, Download Reliability, Battery Opt-Out
-          
-          ---
-          
-          ### 🔁 Retry All & Queue Recovery
-          
-          * **Retry All on Home** — Retry All button in the "Recent downloads" header for Canceled or Failed tasks
-          * **Queued Tasks Survive Restarts** — Queued tasks restore as queued after force-stop instead of becoming Failed
-          
-          ### 🎬 Download Fixes
-          
-          * **Custom Video Formats Fixed** — Custom formats with unreported codecs download the video correctly (thanks @ptgullas, PR #29)
-          * **MP4 Output for Merged Videos** — Video downloads use MP4 unless MKV is selected
-          * **Configure Switch Respected** — With "Configure before download" off, Quick Download, share, and the URL button download immediately (#30)
-          * **Output Template** — Custom templates no longer need `.%(ext)s` (#14)
-          * **Douyin Login** — Opens as a desktop session (#27)
-          
-          ### 🔋 Battery & Stability
-          
-          * **Hide Battery Reminder** — Opt-out in General settings (#26)
-          * **HarmonyOS Crash Fixed** — Battery settings no longer crash on HarmonyOS 4.x (#20)
-          * **Smoother Progress** — Throttled progress updates fix unresponsive menus on OEM ROMs (#10)
-          * **Crash & Memory Hardening** — Safer download state handling and memory leak fixes
-          
-          ### 💖 Donations & Sponsors
-          
-          * **Trust Wallet Donations** — Crypto Donations page with Trust Wallet deep link and QR code
-          * **Sponsor List** — New community supporters added
-          
-          ### 📦 Installation
-          
-          Download the appropriate APK for your device:
-          - **Universal APK**: Works on all devices (recommended)
-          - **arm64-v8a**: For 64-bit ARM devices (most modern phones)
-          - **armeabi-v7a**: For 32-bit ARM devices
-          - **x86_64**: For 64-bit x86 devices
-          - **x86**: For 32-bit x86 devices
-          
-          ### 📜 Full Changelog
-          See [CHANGELOG.md](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md) for complete version history.
-          
-          ---
-          
-          Built on: ${{ github.event.head_commit.timestamp }}
-          Commit: ${{ github.sha }}
+        name: ${{ steps.notes.outputs.RELEASE_TITLE }}
+        body_path: release_body.md
         draft: false
         prerelease: false
         make_latest: true

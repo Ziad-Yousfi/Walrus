@@ -2,6 +2,8 @@
 README.md merge=ours
 CONTRIBUTING.md merge=ours
 CODE_OF_CONDUCT.md merge=ours
+app/build.gradle.kts merge=ours
+buildSrc/src/main/kotlin/Version.kt merge=ours
 app/src/main/java/com/junkfood/seal/ui/page/splash/SplashScreen.kt merge=ours
 app/src/main/java/com/junkfood/seal/ui/page/settings/about/* merge=ours
 app/src/main/java/com/junkfood/seal/ui/page/settings/troubleshooting/TroubleshootingPage.kt merge=ours

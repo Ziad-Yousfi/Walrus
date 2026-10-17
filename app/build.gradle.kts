@@ -20,8 +20,14 @@ val abiFilterList = (properties["ABI_FILTERS"] as String).split(';')
 
 val abiCodes = mapOf("armeabi-v7a" to 1, "arm64-v8a" to 2, "x86" to 3, "x86_64" to 4)
 
-val baseVersionName = currentVersion.name
-val currentVersionCode = currentVersion.code.toInt()
+val baseVersionName =
+    providers.gradleProperty("customVersionName").orNull
+        ?.takeIf { it.isNotBlank() }
+        ?: currentVersion.name
+val currentVersionCode =
+    providers.gradleProperty("customVersionCode").orNull
+        ?.toIntOrNull()
+        ?: currentVersion.code.toInt()
 
 android {
     compileSdk = 37
@@ -45,8 +51,7 @@ android {
         applicationId = "com.walrus.app"
         minSdk = 24
         targetSdk = 37
-        versionCode = 301_000_400
-        check(versionCode == currentVersionCode)
+        versionCode = currentVersionCode
 
         versionName = baseVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -187,4 +192,11 @@ dependencies {
     androidTestImplementation(libs.androidx.test.ext)
     androidTestImplementation(libs.androidx.test.espresso.core)
     implementation(libs.androidx.compose.ui.tooling)
+}
+
+tasks.register("printVersionName") {
+    notCompatibleWithConfigurationCache("Prints version name")
+    doLast {
+        println(baseVersionName)
+    }
 }
