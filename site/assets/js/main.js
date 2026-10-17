@@ -1,6 +1,6 @@
 /**
  * Seal Plus Website — main.js
- * Author: Mahesh Technicals
+ * Author: fernstack
  * Features:
  *   - GitHub Releases API with localStorage cache (1 hr TTL)
  *   - Markdown-lite renderer for changelogs

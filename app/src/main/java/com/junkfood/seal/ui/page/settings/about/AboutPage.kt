@@ -17,8 +17,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.AutoAwesome
+import androidx.compose.material.icons.outlined.BugReport
 import androidx.compose.material.icons.outlined.Description
 import androidx.compose.material.icons.outlined.NewReleases
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Public
 import androidx.compose.material.icons.outlined.Update
 import androidx.compose.material.icons.outlined.UpdateDisabled
@@ -69,14 +71,13 @@ import com.junkfood.seal.ui.component.ConfirmButton
 import com.junkfood.seal.util.AUTO_UPDATE
 import com.junkfood.seal.util.PreferenceUtil
 
-private const val releaseURL = "https://github.com/MaheshTechnicals/Sealplus/releases"
-private const val repoUrl = "https://github.com/MaheshTechnicals/Sealplus/blob/main/README.md"
+private const val releaseURL = "https://github.com/Ziad-Yousfi/Walrus/releases"
+private const val repoUrl = "https://github.com/Ziad-Yousfi/Walrus/blob/main/README.md"
 const val weblate = "https://hosted.weblate.org/engage/seal/"
 const val YtdlpRepository = "https://github.com/yt-dlp/yt-dlp"
-private const val githubIssueUrl = "https://github.com/MaheshTechnicals/Sealplus/issues"
-private const val telegramChannelUrl = "https://t.me/maheshtechnicals"
-private const val youtubeChannelUrl = "https://youtube.com/@maheshtechnicals"
-private const val githubSponsor = "https://github.com/sponsors/JunkFood02"
+private const val githubIssueUrl = "https://github.com/Ziad-Yousfi/Walrus/issues"
+private const val developerGithubUrl = "https://github.com/Ziad-Yousfi"
+private const val githubSponsor = "https://github.com/sponsors/Ziad-Yousfi"
 private const val TAG = "AboutPage"
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -227,10 +228,10 @@ fun AboutPage(
                                 modifier = Modifier.weight(1f),
                             )
                             CommunityCard(
-                                title = stringResource(R.string.telegram_channel),
-                                description = telegramChannelUrl,
-                                icon = painterResource(id = R.drawable.icons8_telegram_app),
-                                onClick = { openUrl(telegramChannelUrl) },
+                                title = stringResource(R.string.github_issue),
+                                description = stringResource(R.string.github_issue_desc),
+                                icon = Icons.Outlined.BugReport,
+                                onClick = { openUrl(githubIssueUrl) },
                                 modifier = Modifier.weight(1f),
                             )
                         }
@@ -239,24 +240,12 @@ fun AboutPage(
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
                         ) {
                             CommunityCard(
-                                title = stringResource(R.string.youtube_channel),
-                                description = youtubeChannelUrl,
-                                icon = painterResource(id = R.drawable.icons8_youtube),
-                                onClick = { openUrl(youtubeChannelUrl) },
+                                title = "Developer",
+                                description = "fernstack",
+                                icon = Icons.Outlined.Person,
+                                onClick = { openUrl(developerGithubUrl) },
                                 modifier = Modifier.weight(1f),
                             )
-                            CommunityCard(
-                                title = stringResource(R.string.website),
-                                description = "sealplus.in",
-                                icon = Icons.Outlined.Public,
-                                onClick = { openUrl("https://sealplus.in/") },
-                                modifier = Modifier.weight(1f),
-                            )
-                        }
-                        Row(
-                            modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        ) {
                             CommunityCard(
                                 title = stringResource(R.string.credits),
                                 description = stringResource(R.string.credits_desc),
@@ -264,7 +253,6 @@ fun AboutPage(
                                 onClick = onNavigateToCreditsPage,
                                 modifier = Modifier.weight(1f),
                             )
-                            Spacer(modifier = Modifier.weight(1f))
                         }
                     }
                 }
@@ -353,7 +341,7 @@ fun AutoUpdateUnavailableDialog(onDismissRequest: () -> Unit = {}) {
         val startIndex = text.indexOf(hyperLinkText)
         val endIndex = startIndex + hyperLinkText.length
         addUrlAnnotation(
-            UrlAnnotation("https://github.com/MaheshTechnicals/Sealplus/releases/latest"),
+            UrlAnnotation("https://github.com/Ziad-Yousfi/Walrus/releases/latest"),
             start = startIndex,
             end = endIndex,
         )

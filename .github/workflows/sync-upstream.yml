@@ -35,6 +35,7 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git config --global merge.ours.driver true
 
       - name: Add and Fetch Upstream
         run: |
@@ -60,11 +61,25 @@ jobs:
           echo "Merging upstream/$UPSTREAM_BRANCH with strategy option -X ours..."
 
           # -X ours merges all upstream changes, bug fixes and dependency updates,
-          # while automatically resolving any conflicting lines in favor of Walrus customizations (name, removed popups, icons).
+          # while automatically resolving any conflicting lines in favor of Walrus customizations.
           if git merge upstream/"$UPSTREAM_BRANCH" -X ours --no-commit --no-ff; then
-            # GITHUB_TOKEN pushes can be rejected when workflow files are modified.
-            # Keep local workflow definitions and sync all other upstream changes.
-            git restore --source=HEAD --staged --worktree .github/workflows || true
+            # Protect repository customizations from upstream overwrite (README, About, Splash, workflows, site)
+            git restore --source=HEAD --staged --worktree \
+              .gitattributes \
+              README.md \
+              app/src/main/java/com/junkfood/seal/ui/page/splash/SplashScreen.kt \
+              app/src/main/java/com/junkfood/seal/ui/page/settings/about \
+              app/src/main/java/com/junkfood/seal/ui/page/settings/troubleshooting/TroubleshootingPage.kt \
+              app/src/main/java/com/junkfood/seal/util/SponsorUtil.kt \
+              .github/workflows \
+              .github/FUNDING.yml \
+              index.html \
+              privacy.html \
+              support.html \
+              contact.html \
+              sitemap.xml \
+              style.css \
+              site || true
             git commit -m "chore(sync): merge upstream updates from MaheshTechnicals/Sealplus [skip ci]"
             echo "Merge successful without conflict."
             echo "status=success" >> "$GITHUB_OUTPUT"

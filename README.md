@@ -6,11 +6,11 @@
 
 ### 🎬 Advanced Video/Audio Downloader for Android
 
-[![GitHub release (latest by date)](https://img.shields.io/github/v/release/MaheshTechnicals/Sealplus?color=black&label=Latest%20Release&logo=github)](https://github.com/MaheshTechnicals/Sealplus/releases/latest/)
-[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/MaheshTechnicals/Sealplus?include_prereleases&label=Preview&logo=Github)](https://github.com/MaheshTechnicals/Sealplus/releases/)
-[![Keep a Changelog](https://img.shields.io/badge/Changelog-lightgray?style=flat&color=gray&logo=keep-a-changelog)](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
-[![GitHub all releases](https://img.shields.io/github/downloads/MaheshTechnicals/Sealplus/total?label=Downloads&logo=github)](https://github.com/MaheshTechnicals/Sealplus/releases/)
-[![GitHub Repo stars](https://img.shields.io/github/stars/MaheshTechnicals/Sealplus?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Im0zNTQtMjQ3IDEyNi03NiAxMjYgNzctMzMtMTQ0IDExMS05Ni0xNDYtMTMtNTgtMTM2LTU4IDEzNS0xNDYgMTMgMTExIDk3LTMzIDE0M1pNMjMzLTgwbDY1LTI4MUw4MC01NTBsMjg4LTI1IDExMi0yNjUgMTEyIDI2NSAyODggMjUtMjE4IDE4OSA2NSAyODEtMjQ3LTE0OUwyMzMtODBabTI0Ny0zNTBaIiBzdHlsZT0iZmlsbDogcmdiKDI0NSwgMjI3LCA2Nik7Ii8%2BCjwvc3ZnPg%3D%3D&color=%23f8e444)](https://github.com/MaheshTechnicals/Sealplus/stargazers)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Ziad-Yousfi/Walrus?color=black&label=Latest%20Release&logo=github)](https://github.com/Ziad-Yousfi/Walrus/releases/latest/)
+[![GitHub release (latest by date including pre-releases)](https://img.shields.io/github/v/release/Ziad-Yousfi/Walrus?include_prereleases&label=Preview&logo=Github)](https://github.com/Ziad-Yousfi/Walrus/releases/)
+[![Keep a Changelog](https://img.shields.io/badge/Changelog-lightgray?style=flat&color=gray&logo=keep-a-changelog)](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
+[![GitHub all releases](https://img.shields.io/github/downloads/Ziad-Yousfi/Walrus/total?label=Downloads&logo=github)](https://github.com/Ziad-Yousfi/Walrus/releases/)
+[![GitHub Repo stars](https://img.shields.io/github/stars/Ziad-Yousfi/Walrus?style=flat&logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyBoZWlnaHQ9IjI0IiB2aWV3Qm94PSIwIC05NjAgOTYwIDk2MCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgogIDxwYXRoIGQ9Im0zNTQtMjQ3IDEyNi03NiAxMjYgNzctMzMtMTQ0IDExMS05Ni0xNDYtMTMtNTgtMTM2LTU4IDEzNS0xNDYgMTMgMTExIDk3LTMzIDE0M1pNMjMzLTgwbDY1LTI4MUw4MC01NTBsMjg4LTI1IDExMi0yNjUgMTEyIDI2NSAyODggMjUtMjE4IDE4OSA2NSAyODEtMjQ3LTE0OUwyMzMtODBabTI0Ny0zNTBaIiBzdHlsZT0iZmlsbDogcmdiKDI0NSwgMjI3LCA2Nik7Ii8%2BCjwvc3ZnPg%3D%3D&color=%23f8e444)](https://github.com/Ziad-Yousfi/Walrus/stargazers)
 [![Supported-Sites](https://img.shields.io/badge/1000%2B%20Sites-9cf?style=flat&logo=data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPHN2ZyBoZWlnaHQ9IjI0cHgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0cHgiIGZpbGw9IiNGRkZGRkYiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPHBhdGggZD0iTTAgMGgyNHYyNEgwVjB6IiBmaWxsPSJub25lIi8+CiAgPHBhdGggZD0iTTExLjk5IDJDNi40NyAyIDIgNi40OCAyIDEyczQuNDcgMTAgOS45OSAxMEMxNy41MiAyMiAyMiAxNy41MiAyMiAxMlMxNy41MiAyIDExLjk5IDJ6bTYuOTMgNmgtMi45NWMtLjMyLTEuMjUtLjc4LTIuNDUtMS4zOC0zLjU2IDEuODQuNjMgMy4zNyAxLjkxIDQuMzMgMy41NnpNMTIgNC4wNGMuODMgMS4yIDEuNDggMi41MyAxLjkxIDMuOTZoLTMuODJjLjQzLTEuNDMgMS4wOC0yLjc2IDEuOTEtMy45NnpNNC4yNiAxNEM0LjEgMTMuMzYgNCAxMi42OSA0IDEycy4xLTEuMzYuMjYtMmgzLjM4Yy0uMDguNjYtLjE0IDEuMzItLjE0IDJzLjA2IDEuMzQuMTQgMkg0LjI2em0uODIgMmgyLjk1Yy4zMiAxLjI1Ljc4IDIuNDUgMS4zOCAzLjU2LTEuODQtLjYzLTMuMzctMS45LTQuMzMtMy41NnptMi45NS04SDUuMDhjLjk2LTEuNjYgMi40OS0yLjkzIDQuMzMtMy41NkM4LjgxIDUuNTUgOC4zNSA2Ljc1IDguMDMgOHpNMTIgMTkuOTZjLS44My0xLjItMS40OC0yLjUzLTEuOTEtMy45NmgzLjgyYy0uNDMgMS40My0xLjA4IDIuNzYtMS45MSAzLjk2ek0xNC4zNCAxNEg5LjY2Yy0uMDktLjY2LS4xNi0xLjMyLS4xNi0ycy4wNy0xLjM1LjE2LTJoNC42OGMuMDkuNjUuMTYgMS4zMi4xNiAycy0uMDcgMS4zNC0uMTYgMnptLjI1IDUuNTZjLjYtMS4xMSAxLjA2LTIuMzEgMS4zOC0zLjU2aDIuOTVjLS45NiAxLjY1LTIuNDkgMi45My00LjMzIDMuNTZ6TTE2LjM2IDE0Yy4wOC0uNjYuMTQtMS4zMi4xNC0ycy0uMDYtMS4zNC0uMTQtMmgzLjM4Yy4xNi42NC4yNiAxLjMxLjI2IDJzLS4xIDEuMzYtLjI2IDJoLTMuMzh6IiBzdHlsZT0iZmlsbDogcmdiKDE2MiwgMTk4LCAyMzQpOyIvPgo8L3N2Zz4=&label=Supported)](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
 [![Android API](https://img.shields.io/badge/API-24%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=24)
 [![License](https://img.shields.io/github/license/JunkFood02/Seal?style=flat&color=blue)](https://github.com/JunkFood02/Seal/blob/main/LICENSE)
@@ -21,7 +21,7 @@
 
 - **🎨 Exclusive Gradient Dark Theme**: Premium glassmorphism UI with vibrant gradients
 - **⚡ Auto-Update System**: Seamless in-app updates from our release page
-- **🎯 Enhanced Repository**: Active maintenance and improvements by [Mahesh Technicals](https://github.com/MaheshTechnicals)
+- **🎯 Enhanced Repository**: Active maintenance and improvements by [fernstack](https://github.com/Ziad-Yousfi)
 - **💎 Modern Architecture**: Latest Android SDK 37, Kotlin 2.3, Jetpack Compose, yt-dlp 2025.12.08
 - **🚀 Performance Optimized**: Hardware-accelerated animations, ultra-fast downloads with speed optimization, advanced aria2c support
 
@@ -77,7 +77,7 @@ English
 ## ✨ Key Features
 
 ### � Premium UI & Theming
-- **Gradient Dark Theme** ⭐ *Exclusive to Seal Plus*
+- **Gradient Dark Theme** ⭐ *Exclusive to Walrus*
   - Deep charcoal/obsidian backgrounds (#0A0A0F, #14141F) perfect for OLED displays
   - Vibrant linear gradients with blues (#5B47E5) and purples (#8B5CF6)
   - Sophisticated glassmorphism effects with backdrop blur
@@ -134,7 +134,7 @@ English
   - Search and filter capabilities
   - Batch operations support
 
-### 🚀 Exclusive Seal Plus Features
+### 🚀 Exclusive Walrus Features
 - **Auto-Update System**: Seamless in-app updates
   - Automatic version checking
   - One-click APK updates
@@ -142,8 +142,6 @@ English
   - Enabled by default for convenience
 
 - **Enhanced Community**: Connected ecosystem
-  - [YouTube Channel](https://youtube.com/@maheshtechnicals) for tutorials
-  - [Telegram Community](https://t.me/maheshtechnicals) for support
   - Active development and quick bug fixes
   - Regular feature updates
 
@@ -177,7 +175,7 @@ English
 <details open>
 <summary><b>📱 Click to see latest updates - Retry All, Download Fixes, Battery Opt-Out (October 13, 2026)</b></summary>
 
-## ✨ Seal Plus v3.1.0 - Retry All, Download Reliability, Battery Opt-Out
+## ✨ Walrus v3.1.0 - Retry All, Download Reliability, Battery Opt-Out
 
 ---
 
@@ -210,7 +208,7 @@ For the full list see the [CHANGELOG](CHANGELOG.md).
 <details open>
 <summary><b>📱 Click to see latest updates - More Tools Suite, Swipeable Details Sheet, Battery Re-Arming, Cookie Fix (July 30, 2026)</b></summary>
 
-## ✨ Seal Plus v3.0.0 - Dedicated Tools Hub, Swipeable Details Sheet, Battery Re-Arming
+## ✨ Walrus v3.0.0 - Dedicated Tools Hub, Swipeable Details Sheet, Battery Re-Arming
 
 ---
 
@@ -243,7 +241,7 @@ For the full list see the [CHANGELOG](CHANGELOG.md).
 ### 🍪 Cookie & Network Enhancements
 
 * **Cookie Domain Matching Fix** — Properly aligns dot-prefixed domains (`.youtube.com`) with `includeSubdomains` flag, fixing cookie parsing issues on subdomains
-* **Removed Legacy Proxy Feature** — Completely removed outdated Proxy settings and `ProxyManager` from Sealplus Extras, simplifying network handling
+* **Removed Legacy Proxy Feature** — Completely removed outdated Proxy settings and `ProxyManager` from Walrus Extras, simplifying network handling
 
 ### 💖 Crypto Donation Support & Sponsors
 
@@ -271,19 +269,19 @@ For the full list see the [CHANGELOG](CHANGELOG.md).
 
 ### 📜 Full Changelog
 
-See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md) for complete version history.
+See [CHANGELOG.md](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md) for complete version history.
 
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.8 (June 11, 2026)</b></summary>
 
-#### ✨ Seal Plus v2.8.0 - Settings & About Redesign, Dependency Overhaul, Website Redesign
+#### ✨ Walrus v2.8.0 - Settings & About Redesign, Dependency Overhaul, Website Redesign
 
 #### 🎨 Settings & About Page Redesign
 - ✅ **Full-Width Settings LazyColumn** - PreferenceItem + chevron icons throughout
 - ✅ **Card-Based About Page** - 2-column CommunityCard grid
-- ✅ **Website link** to sealplus.in, Auto-Update standalone Card
+- ✅ **Website link** to github.com/Ziad-Yousfi/Walrus, Auto-Update standalone Card
 
 #### 🔌 Accompanist → Platform API Migration
 - ✅ **Permissions** replaced with ActivityResultContracts
@@ -303,18 +301,18 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 #### 🌍 Website Redesign & SEO Overhaul
 - ✅ New support/contact pages, glassmorphism design
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.7 (May 22, 2026)</b></summary>
 
-#### ✨ Seal Plus v2.7.0 - GitHub Sponsors Integration, Enhanced File Management & UI Improvements
+#### ✨ Walrus v2.7.0 - GitHub Sponsors Integration, Enhanced File Management & UI Improvements
 
 #### 🎁 Monetization & Support
 - ✅ **GitHub Sponsors Integration** - New donation option in Support Developer page
-- ✅ **Support development** directly via github.com/sponsors/MaheshTechnicals
+- ✅ **Support development** directly via github.com/sponsors/Ziad-Yousfi
 
 #### 📦 Database & File Management
 - ✅ **Database Schema Upgrade (v7 → v8)** - Added videoId field for tracking
@@ -324,14 +322,14 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 - ✅ **Task Deletion Confirmation Dialog** - Prevents accidental deletion
 - ✅ **Improved Download State Management** - Better network handling
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.6 (April 27, 2026)</b></summary>
 
-#### ✨ Seal Plus v2.6.0 - Security Hardening, 20 Stability Fixes & Material3 Stable
+#### ✨ Walrus v2.6.0 - Security Hardening, 20 Stability Fixes & Material3 Stable
 
 #### 🔒 Security Hardening
 - ✅ **PBKDF2 PIN Hashing** - Industry-standard 200K-iteration secure PIN with salt
@@ -356,14 +354,14 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 - ✅ **Instant Sync** - Recent Downloads updated instantly
 - ✅ **Real-Time File Detection** - Missing files gray out immediately
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.4 (March 10, 2026)</b></summary>
 
-#### ✨ Seal Plus v2.4.0 - Premium Animations, Icon Theming & Share Intent
+#### ✨ Walrus v2.4.0 - Premium Animations, Icon Theming & Share Intent
 
 #### ✨ Animated Branding & Visual Polish
 - ✅ **Animated Glowing "+" Logo** - Flowing gradient animation (primary → tertiary → secondary)
@@ -384,15 +382,15 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 - ✅ **Share Intent URL Handling** - URLs from other apps auto-fill in download field
 - ✅ **Navigation Route Updates** - Sponsor page redirects to Support Developer page
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.3 (March 3, 2026)</b></summary>
 
-#### ⚙️ Seal Plus v2.3.0 - Smart Downloads, Speed Controls & Better Details
+#### ⚙️ Walrus v2.3.0 - Smart Downloads, Speed Controls & Better Details
 
-#### ⚙️ Seal Plus Extras Enhancements
+#### ⚙️ Walrus Extras Enhancements
 - ✅ **Aria2c Connection Control** - Connection count selector (2/4/8/16/32+)
 - ✅ **Sponsor Dialog Controls** - Off/Weekly/Monthly schedule
 
@@ -407,13 +405,13 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 #### 🚀 Smart Stream-Merge Routing
 - ✅ **Platform-Aware Format Selection** - Best format per platform
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 </details>
 
 <details>
 <summary><b>📱 Previous Release - v2.2 (February 27, 2026)</b></summary>
 
-#### 🏎️ Seal Plus v2.2.0 - Downloader Performance & Core Fixes
+#### 🏎️ Walrus v2.2.0 - Downloader Performance & Core Fixes
 
 #### 🚀 Performance Optimization
 - ✅ **Aria2c Speed Boost** - Fixed argument quoting, doubled connections (8 → 16 streams)
@@ -428,7 +426,7 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 - ✅ **Cleaner progress text** - Removed `[download]` prefix from progress cards
 - ✅ **Progress bar fix** - 0.1–0.9% shows real bar instead of spinner
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 </details>
 
 <details>
@@ -475,7 +473,7 @@ See [CHANGELOG.md](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGE
 - 🔒 **App Lock** with PIN & Biometric
 - 🎥 **Enhanced Video Merging** - Best quality automatically
 
-[View Full Changelog →](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+[View Full Changelog →](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 </details>
 
 ### 📦 Recommended Installation
@@ -484,7 +482,7 @@ For most Android devices, install the **arm64-v8a** version for optimal performa
 
 ### 🚀 Latest Releases
 
-- **Latest Stable**: [Download from GitHub Releases](https://github.com/MaheshTechnicals/Sealplus/releases/latest)
+- **Latest Stable**: [Download from GitHub Releases](https://github.com/Ziad-Yousfi/Walrus/releases/latest)
   - ✅ **Current Version**: v3.1.0 (October 2026)
   - 🔁 **Retry All** - Restart all canceled or failed downloads from the home screen or Downloads page
   - 🔋 **Hide Battery Reminder** - Opt-out of the battery optimization popup
@@ -500,7 +498,7 @@ For most Android devices, install the **arm64-v8a** version for optimal performa
   - 🌐 **1000+ Sites** - Download from YouTube, Instagram, TikTok & more
   - 🚀 **Auto-Update System** enabled for seamless updates
 
-- **Preview Builds**: [Download Pre-release Versions](https://github.com/MaheshTechnicals/Sealplus/releases) 
+- **Preview Builds**: [Download Pre-release Versions](https://github.com/Ziad-Yousfi/Walrus/releases) 
   - 🧪 Test cutting-edge features
   - 🐛 Help us identify and fix bugs
   - 📢 Early access to new functionality
@@ -523,7 +521,7 @@ For most Android devices, install the **arm64-v8a** version for optimal performa
 
 ### 📋 Installation Instructions
 
-1. **Download** the appropriate APK for your device architecture from [Releases](https://github.com/MaheshTechnicals/Sealplus/releases/latest)
+1. **Download** the appropriate APK for your device architecture from [Releases](https://github.com/Ziad-Yousfi/Walrus/releases/latest)
 2. **Enable** "Install from unknown sources" in Settings → Security
 3. **Open** the downloaded APK file
 4. **Follow** the installation prompts
@@ -531,10 +529,10 @@ For most Android devices, install the **arm64-v8a** version for optimal performa
 6. **Enjoy** seamless downloads!
 
 > [!TIP]
-> **Auto-Update Feature**: Once installed, Seal Plus will automatically check for updates. You'll be notified when new versions are available and can update with one click!
+> **Auto-Update Feature**: Once installed, Walrus will automatically check for updates. You'll be notified when new versions are available and can update with one click!
 
 > [!WARNING]
-> **Security Notice**: Always download Seal Plus exclusively from our [official GitHub releases page](https://github.com/MaheshTechnicals/Sealplus/releases). Never download from third-party sources to ensure you're getting the authentic, safe version.
+> **Security Notice**: Always download Walrus exclusively from our [official GitHub releases page](https://github.com/Ziad-Yousfi/Walrus/releases). Never download from third-party sources to ensure you're getting the authentic, safe version.
 
 ---
 
@@ -555,7 +553,7 @@ The theme features deep backgrounds with vibrant blue-purple gradients and smoot
 <details>
 <summary><b>🔄 How does auto-update work?</b></summary>
 
-Seal Plus automatically checks for updates from our GitHub releases:
+Walrus automatically checks for updates from our GitHub releases:
 - Enabled by default for all installations
 - Checks when you open the app (not intrusive)
 - Shows changelog before updating
@@ -584,7 +582,7 @@ This project is tested with BrowserStack
 <details>
 <summary><b>🌍 Can I use this to download from any website?</b></summary>
 
-Seal Plus supports **1000+ platforms** via yt-dlp, including:
+Walrus supports **1000+ platforms** via yt-dlp, including:
 - ✅ YouTube, YouTube Music
 - ✅ Instagram, TikTok, Twitter/X
 - ✅ Facebook, Reddit, Vimeo
@@ -597,7 +595,7 @@ Seal Plus supports **1000+ platforms** via yt-dlp, including:
 <details>
 <summary><b>🎵 Can I extract only audio from videos?</b></summary>
 
-Yes! Seal Plus has excellent audio extraction:
+Yes! Walrus has excellent audio extraction:
 - Toggle "Save as audio" option
 - Choose format (MP3, M4A, OPUS, etc.)
 - Automatic metadata embedding
@@ -626,7 +624,7 @@ Choose based on your comfort level!
 </details>
 
 <details>
-<summary><b>🔐 Is Seal Plus safe? Does it collect my data?</b></summary>
+<summary><b>🔐 Is Walrus safe? Does it collect my data?</b></summary>
 
 **Absolutely safe!**
 - ✅ 100% open-source (view all code)
@@ -636,18 +634,18 @@ Choose based on your comfort level!
 - ✅ All processing done locally on your device
 - ✅ Licensed under GPL-3.0
 
-You can verify everything in the [source code](https://github.com/MaheshTechnicals/Sealplus).
+You can verify everything in the [source code](https://github.com/Ziad-Yousfi/Walrus).
 </details>
 
 <details>
-<summary><b>📱 What's the difference between Seal and Seal Plus?</b></summary>
+<summary><b>📱 What's the difference between Seal and Walrus?</b></summary>
 
-**Seal Plus** is an enhanced fork with:
+**Walrus** is an enhanced fork with:
 - 🎨 **Exclusive Gradient Dark Theme** with glassmorphism
 - 🚀 **Auto-update system** enabled by default
 - 📺 **Enhanced community** (YouTube, Telegram)
 - 🔧 **Additional UI improvements** and optimizations
-- 🎯 **Active maintenance** by Mahesh Technicals
+- 🎯 **Active maintenance** by fernstack
 - 🏆 **Latest tech stack** (Kotlin 2.0, Compose 2025, SDK 36)
 
 Both are free and open-source!
@@ -662,7 +660,7 @@ Try these solutions:
 3. **Clear cache**: Settings → Storage → Clear cache
 4. **Try custom command**: Some sites need specific parameters
 5. **Check site support**: Visit [supported sites list](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
-6. **Report issue**: [GitHub Issues](https://github.com/MaheshTechnicals/Sealplus/issues) with details
+6. **Report issue**: [GitHub Issues](https://github.com/Ziad-Yousfi/Walrus/issues) with details
 
 Most issues are resolved by updating yt-dlp!
 </details>
@@ -673,26 +671,23 @@ Most issues are resolved by updating yt-dlp!
 
 ### 🌐 Join Our Community
 
-Stay connected with the Seal Plus community and get support:
+Stay connected with the Walrus community and get support:
 
-- **📺 YouTube Channel**: [Mahesh Technicals](https://youtube.com/@maheshtechnicals)
-  - Video tutorials and feature demonstrations
-  - Tips and tricks for advanced usage
-  - Update announcements and previews
+- **🐙 GitHub Repository**: [Ziad-Yousfi/Walrus](https://github.com/Ziad-Yousfi/Walrus)
+  - Latest source code and updates
+  - Release downloads and changelogs
 
-- **💬 Telegram Channel**: [Join @maheshtechnicals](https://t.me/maheshtechnicals)
-  - Latest updates and announcements
-  - Quick community support
-  - Direct developer interaction
-  - Beta testing opportunities
+- **💬 GitHub Issues & Discussions**: [Walrus Community](https://github.com/Ziad-Yousfi/Walrus/issues)
+  - Bug reports and feature suggestions
+  - Quick community support & developer interaction
 
 ### 🐛 Bug Reports & Feature Requests
 
-We value your feedback! Help us improve Seal Plus:
+We value your feedback! Help us improve Walrus:
 
-1. **Check First**: Browse [existing issues](https://github.com/MaheshTechnicals/Sealplus/issues) to avoid duplicates
-2. **Read Guidelines**: Review our [Contributing Guidelines](https://github.com/MaheshTechnicals/Sealplus/blob/main/CONTRIBUTING.md)
-3. **Report Issues**: Open a [new issue](https://github.com/MaheshTechnicals/Sealplus/issues/new) with:
+1. **Check First**: Browse [existing issues](https://github.com/Ziad-Yousfi/Walrus/issues) to avoid duplicates
+2. **Read Guidelines**: Review our [Contributing Guidelines](https://github.com/Ziad-Yousfi/Walrus/blob/main/CONTRIBUTING.md)
+3. **Report Issues**: Open a [new issue](https://github.com/Ziad-Yousfi/Walrus/issues/new) with:
    - Clear description of the problem/feature
    - Steps to reproduce (for bugs)
    - Your device model and Android version
@@ -701,26 +696,24 @@ We value your feedback! Help us improve Seal Plus:
 
 ### 📖 Documentation & Resources
 
-- **📋 Changelog**: [View all changes and updates](https://github.com/MaheshTechnicals/Sealplus/blob/main/CHANGELOG.md)
+- **📋 Changelog**: [View all changes and updates](https://github.com/Ziad-Yousfi/Walrus/blob/main/CHANGELOG.md)
 - **🌍 Supported Sites**: [Full list of 1000+ supported platforms](https://github.com/yt-dlp/yt-dlp/blob/master/supportedsites.md)
-- **🎨 Gradient Dark Theme**: [Complete documentation](https://github.com/MaheshTechnicals/Sealplus/blob/main/GRADIENT_DARK_README.md)
-- **📖 Contributing Guide**: [How to contribute](https://github.com/MaheshTechnicals/Sealplus/blob/main/CONTRIBUTING.md)
+- **🎨 Gradient Dark Theme**: [Complete documentation](https://github.com/Ziad-Yousfi/Walrus/blob/main/GRADIENT_DARK_README.md)
+- **📖 Contributing Guide**: [How to contribute](https://github.com/Ziad-Yousfi/Walrus/blob/main/CONTRIBUTING.md)
 
-## 💖 Support Seal Plus
+## 💖 Support Walrus
 
 ### ❤️ Show Your Support
 
-Seal Plus is **100% free and open-source** software, built with passion by the community. Here's how you can help:
+Walrus is **100% free and open-source** software, built with passion by the community. Here's how you can help:
 
 | Action | Impact |
 |--------|--------|
-| ⭐ **Star this repo** | Help others discover Seal Plus |
-| 📺 **Subscribe on YouTube** | Get tutorials and update notifications |
-| 💬 **Join Telegram** | Connect with the community |
+| ⭐ **Star this repo** | Help others discover Walrus |
 | 🐛 **Report bugs** | Help us fix issues faster |
-| 💡 **Suggest features** | Shape the future of Seal Plus |
+| 💡 **Suggest features** | Shape the future of Walrus |
 | 🌍 **Translate** | Make it accessible worldwide |
-| 📢 **Share** | Tell your friends about Seal Plus |
+| 📢 **Share** | Tell your friends about Walrus |
 
 ### 🎉 Special Thanks
 
@@ -728,18 +721,18 @@ A huge thank you to:
 - **[JunkFood02](https://github.com/JunkFood02)** and all [original Seal contributors](https://github.com/JunkFood02/Seal/graphs/contributors)
 - **All sponsors** supporting the original Seal project
 - **Our community members** providing feedback and bug reports
-- **Translators** making Seal Plus accessible worldwide
-- **Everyone** who has starred, shared, or used Seal Plus
+- **Translators** making Walrus accessible worldwide
+- **Everyone** who has starred, shared, or used Walrus
 
 Your contributions and support make this project possible! 🙏
 
-## 🤝 Contributing to Seal Plus
+## 🤝 Contributing to Walrus
 
 We welcome all contributions! Whether you're a developer, designer, translator, or user, there's a way for you to help.
 
 ### 🌍 Translations
 
-Help make Seal Plus accessible to users worldwide:
+Help make Walrus accessible to users worldwide:
 
 - **Contribute**: Visit [Hosted Weblate](https://hosted.weblate.org/projects/seal/) to add or improve translations
 - **Current Status**: 
@@ -780,7 +773,7 @@ Help make Seal Plus accessible to users worldwide:
 ### 📋 Contribution Guidelines
 
 > [!IMPORTANT]
-> Before contributing, please read our [Contributing Guidelines](https://github.com/MaheshTechnicals/Sealplus/blob/main/CONTRIBUTING.md) for:
+> Before contributing, please read our [Contributing Guidelines](https://github.com/Ziad-Yousfi/Walrus/blob/main/CONTRIBUTING.md) for:
 > - Code style standards
 > - Commit message conventions
 > - Pull request requirements
@@ -807,11 +800,11 @@ Help make Seal Plus accessible to users worldwide:
 
 Watch how our community has grown over time!
 
-<a href="https://www.star-history.com/?repos=MaheshTechnicals%2FSealplus&type=date&legend=top-left">
+<a href="https://www.star-history.com/#Ziad-Yousfi/Walrus&Date">
  <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=MaheshTechnicals/Sealplus&type=date&theme=dark&legend=top-left&sealed_token=GOlb1s7yaOu_jIlZC6RgDlzDCmd8ES-3lqcTtDciPQFpy_uLPyxWkX0aE9zzzfmENuI1HsIHaIO247uaLgCSijoYhEkKo0CWE1en_LqiTZfObqGgZSLzgw" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=MaheshTechnicals/Sealplus&type=date&legend=top-left&sealed_token=GOlb1s7yaOu_jIlZC6RgDlzDCmd8ES-3lqcTtDciPQFpy_uLPyxWkX0aE9zzzfmENuI1HsIHaIO247uaLgCSijoYhEkKo0CWE1en_LqiTZfObqGgZSLzgw" />
-   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=MaheshTechnicals/Sealplus&type=date&legend=top-left&sealed_token=GOlb1s7yaOu_jIlZC6RgDlzDCmd8ES-3lqcTtDciPQFpy_uLPyxWkX0aE9zzzfmENuI1HsIHaIO247uaLgCSijoYhEkKo0CWE1en_LqiTZfObqGgZSLzgw" />
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=Ziad-Yousfi/Walrus&type=Date&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=Ziad-Yousfi/Walrus&type=Date" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=Ziad-Yousfi/Walrus&type=Date" />
  </picture>
 </a>
 
@@ -819,7 +812,7 @@ Watch how our community has grown over time!
 
 ## 🙏 Acknowledgments & Credits
 
-Seal Plus stands on the shoulders of giants. We're grateful to these amazing open-source projects and contributors:
+Walrus stands on the shoulders of giants. We're grateful to these amazing open-source projects and contributors:
 
 ### 🏆 Core Technologies
 
@@ -847,28 +840,28 @@ Seal Plus stands on the shoulders of giants. We're grateful to these amazing ope
 | **[Monet](https://github.com/Kyant0/Monet)** | Color scheme generation |
 | **[Material 3 Components](https://m3.material.io/)** | Modern UI components |
 
-### 🎯 Seal Plus Exclusive Features
+### 🎯 Walrus Exclusive Features
 
 **Gradient Dark Theme** - Premium UI mode with glassmorphism effects
-- Designed and implemented by [Mahesh Technicals](https://github.com/MaheshTechnicals)
+- Designed and implemented by [fernstack](https://github.com/Ziad-Yousfi)
 - 21 new resource files and components
 - 2,200+ lines of documentation
-- [View Implementation Guide](https://github.com/MaheshTechnicals/Sealplus/blob/main/GRADIENT_DARK_IMPLEMENTATION_GUIDE.md)
+- [View Implementation Guide](https://github.com/Ziad-Yousfi/Walrus/blob/main/GRADIENT_DARK_IMPLEMENTATION_GUIDE.md)
 
 ### 🌟 Original Creator
 
 **[JunkFood02](https://github.com/JunkFood02)** - Creator of the original Seal project
 - Thank you for building an amazing foundation
-- Seal Plus is an enhanced fork with additional features
+- Walrus is an enhanced fork with additional features
 - All [original contributors](https://github.com/JunkFood02/Seal/graphs/contributors) deserve recognition
 
 ### 🌍 Community Contributors
 
-- **Translators** on [Weblate](https://hosted.weblate.org/projects/seal/) - Making Seal Plus accessible worldwide
+- **Translators** on [Weblate](https://hosted.weblate.org/projects/seal/) - Making Walrus accessible worldwide
 - **Beta Testers** - Helping us catch bugs early
 - **Issue Reporters** - Providing valuable feedback
 - **Feature Suggesters** - Shaping the roadmap
-- **All Contributors** to [Seal Plus](https://github.com/MaheshTechnicals/Sealplus/graphs/contributors)
+- **All Contributors** to [Walrus](https://github.com/Ziad-Yousfi/Walrus/graphs/contributors)
 
 ### 💝 Special Recognition
 
@@ -876,7 +869,7 @@ This project wouldn't be possible without the collective efforts of the open-sou
 
 ## 📃 License
 
-[![GitHub](https://img.shields.io/github/license/MaheshTechnicals/Sealplus?style=for-the-badge)](https://github.com/MaheshTechnicals/Sealplus/blob/main/LICENSE)
+[![GitHub](https://img.shields.io/github/license/Ziad-Yousfi/Walrus?style=for-the-badge)](https://github.com/Ziad-Yousfi/Walrus/blob/main/LICENSE)
 
 >[!Warning]
 >

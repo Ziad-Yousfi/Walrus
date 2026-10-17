@@ -215,7 +215,7 @@ fun SplashScreen(
                 .alpha(taglineAlpha)
         ) {
             Text(
-                text = "Powered by Mahesh Technicals",
+                text = "Developed by fernstack",
                 style = MaterialTheme.typography.bodySmall,
                 color = if (isGradientDark) {
                     GradientDarkColors.OnSurface.copy(alpha = 0.6f)
@@ -227,7 +227,7 @@ fun SplashScreen(
             Spacer(modifier = Modifier.height(4.dp))
             
             Text(
-                text = "© 2026 Seal Plus",
+                text = "© 2026 Walrus",
                 style = MaterialTheme.typography.labelSmall,
                 color = if (isGradientDark) {
                     GradientDarkColors.OnSurface.copy(alpha = 0.4f)

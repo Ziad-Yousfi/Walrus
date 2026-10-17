@@ -190,7 +190,7 @@ fun SupportDeveloperPage(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                                 )
                                 Text(
-                                    text = "Mahesh Varma",
+                                    text = "fernstack",
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -204,7 +204,7 @@ fun SupportDeveloperPage(
                                 .fillMaxWidth()
                                 .clip(RoundedCornerShape(12.dp))
                                 .clickable {
-                                    uriHandler.openUri("https://github.com/MaheshTechnicals")
+                                    uriHandler.openUri("https://github.com/Ziad-Yousfi")
                                 }
                                 .padding(12.dp),
                             horizontalArrangement = Arrangement.spacedBy(12.dp),
@@ -223,7 +223,7 @@ fun SupportDeveloperPage(
                                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f)
                                 )
                                 Text(
-                                    text = "@MaheshTechnicals",
+                                    text = "@Ziad-Yousfi",
                                     style = MaterialTheme.typography.bodyLarge,
                                     fontWeight = FontWeight.Medium,
                                     color = MaterialTheme.colorScheme.primary
@@ -250,51 +250,7 @@ fun SupportDeveloperPage(
                 )
             }
             
-            // UPI Payment
-            item {
-                DonationOptionCard(
-                    iconRes = R.drawable.google_pay,
-                    title = "UPI Payment",
-                    description = "MaheshTechnicals@idbi",
-                    gradient = if (isDarkTheme && isGradientDark) {
-                        GradientBrushes.Primary
-                    } else {
-                        Brush.linearGradient(
-                            colors = listOf(
-                                Color(0xFF6366F1),
-                                Color(0xFF8B5CF6)
-                            )
-                        )
-                    },
-                    onClick = {
-                        openUpiPayment(
-                            context = context,
-                            upiId = "MaheshTechnicals@idbi",
-                            name = "Mahesh Technicals",
-                            note = "Support Walrus Development"
-                        )
-                    }
-                )
-            }
-            
-            // PayPal
-            item {
-                DonationOptionCard(
-                    iconRes = R.drawable.paypal,
-                    title = "PayPal",
-                    description = "Support via PayPal",
-                    gradient = Brush.linearGradient(
-                        colors = listOf(
-                            Color(0xFF0070BA),
-                            Color(0xFF1546A0)
-                        )
-                    ),
-                    onClick = {
-                        uriHandler.openUri("https://www.paypal.com/paypalme/Varma161")
-                    }
-                )
-            }
-            
+
             // GitHub Sponsors
             item {
                 DonationOptionCard(
@@ -308,7 +264,7 @@ fun SupportDeveloperPage(
                         )
                     ),
                     onClick = {
-                        uriHandler.openUri("https://github.com/sponsors/MaheshTechnicals")
+                        uriHandler.openUri("https://github.com/sponsors/Ziad-Yousfi")
                     }
                 )
             }
@@ -387,55 +343,6 @@ fun SupportDeveloperPage(
                 Spacer(modifier = Modifier.height(16.dp))
             }
         }
-    }
-}
-
-/**
- * Opens UPI payment intent with pre-filled UPI ID
- * Shows all available UPI apps (Google Pay, PhonePe, Paytm, BHIM, etc.)
- * 
- * @param context Android context
- * @param upiId UPI ID of the payee
- * @param name Name of the payee
- * @param note Transaction note/description
- */
-private fun openUpiPayment(
-    context: android.content.Context,
-    upiId: String,
-    name: String,
-    note: String = ""
-) {
-    try {
-        // Build UPI payment URI
-        // Format: upi://pay?pa=UPI_ID&pn=NAME&tn=NOTE&cu=CURRENCY
-        val uri = Uri.parse("upi://pay").buildUpon()
-            .appendQueryParameter("pa", upiId)  // Payee address (UPI ID)
-            .appendQueryParameter("pn", name)    // Payee name
-            .appendQueryParameter("tn", note)    // Transaction note
-            .appendQueryParameter("cu", "INR")   // Currency
-            .build()
-        
-        // Create intent to handle UPI payment
-        val intent = Intent(Intent.ACTION_VIEW, uri)
-        
-        // Show chooser with all available UPI apps
-        val chooser = Intent.createChooser(intent, "Pay with")
-        context.startActivity(chooser)
-        
-    } catch (e: android.content.ActivityNotFoundException) {
-        // No UPI app found - copy to clipboard as fallback
-        val clipboardManager = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) 
-            as android.content.ClipboardManager
-        val clip = android.content.ClipData.newPlainText("UPI ID", upiId)
-        clipboardManager.setPrimaryClip(clip)
-        context.makeToast("No UPI apps found. UPI ID copied to clipboard")
-    } catch (e: Exception) {
-        // Other error - copy to clipboard as fallback
-        val clipboardManager = context.getSystemService(android.content.Context.CLIPBOARD_SERVICE) 
-            as android.content.ClipboardManager
-        val clip = android.content.ClipData.newPlainText("UPI ID", upiId)
-        clipboardManager.setPrimaryClip(clip)
-        context.makeToast("Error opening UPI app. UPI ID copied to clipboard")
     }
 }
 

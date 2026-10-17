@@ -1,0 +1,15 @@
+# Keep Walrus fork customizations during upstream git merges (prevents conflicts)
+README.md merge=ours
+app/src/main/java/com/junkfood/seal/ui/page/splash/SplashScreen.kt merge=ours
+app/src/main/java/com/junkfood/seal/ui/page/settings/about/* merge=ours
+app/src/main/java/com/junkfood/seal/ui/page/settings/troubleshooting/TroubleshootingPage.kt merge=ours
+app/src/main/java/com/junkfood/seal/util/SponsorUtil.kt merge=ours
+.github/workflows/* merge=ours
+.github/FUNDING.yml merge=ours
+index.html merge=ours
+privacy.html merge=ours
+support.html merge=ours
+contact.html merge=ours
+sitemap.xml merge=ours
+style.css merge=ours
+site/** merge=ours

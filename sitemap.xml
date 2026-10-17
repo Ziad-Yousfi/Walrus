@@ -9,15 +9,15 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://raw.githubusercontent.com/MaheshTechnicals/Sealplus/main/fastlane/metadata/android/en-US/images/icon.png</image:loc>
+      <image:loc>https://raw.githubusercontent.com/Ziad-Yousfi/Walrus/main/fastlane/metadata/android/en-US/images/icon.png</image:loc>
       <image:title>Seal Plus APK — Official Android Video Downloader Icon</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://raw.githubusercontent.com/MaheshTechnicals/Sealplus/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg</image:loc>
+      <image:loc>https://raw.githubusercontent.com/Ziad-Yousfi/Walrus/main/fastlane/metadata/android/en-US/images/phoneScreenshots/1.jpg</image:loc>
       <image:title>Seal Plus APK home screen — download manager</image:title>
     </image:image>
     <image:image>
-      <image:loc>https://raw.githubusercontent.com/MaheshTechnicals/Sealplus/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg</image:loc>
+      <image:loc>https://raw.githubusercontent.com/Ziad-Yousfi/Walrus/main/fastlane/metadata/android/en-US/images/phoneScreenshots/2.jpg</image:loc>
       <image:title>Seal Plus gradient dark theme</image:title>
     </image:image>
   </url>

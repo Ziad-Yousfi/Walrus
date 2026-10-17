@@ -132,7 +132,7 @@ fun CryptoDonationPage(
                                 MaterialTheme.colorScheme.onPrimaryContainer
                         )
                         Text(
-                            text = "Support Seal Plus development with USDT (BEP20) tokens",
+                            text = "Support Walrus development with USDT (BEP20) tokens",
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             color = if (isDarkTheme && isGradientDark)

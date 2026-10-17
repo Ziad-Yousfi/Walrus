@@ -189,9 +189,9 @@ fun GitHubSponsorsPage(onNavigateBack: () -> Unit) {
                     HeroHeader(isDarkTheme = isDarkTheme, isGradientDark = isGradientDark)
                 }
                 
-                // About Seal Plus Section
+                // About Walrus Section
                 item(span = { GridItemSpan(maxLineSpan) }) {
-                    AboutSealPlusSection()
+                    AboutWalrusSection()
                 }
                 
                 // Features Grid
@@ -313,7 +313,7 @@ fun HeroHeader(isDarkTheme: Boolean, isGradientDark: Boolean) {
                     MaterialTheme.colorScheme.onPrimaryContainer
             )
             Text(
-                text = "Support Seal Plus",
+                text = "Support Walrus",
                 style = MaterialTheme.typography.headlineMedium,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
@@ -336,7 +336,7 @@ fun HeroHeader(isDarkTheme: Boolean, isGradientDark: Boolean) {
 }
 
 @Composable
-fun AboutSealPlusSection() {
+fun AboutWalrusSection() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -363,7 +363,7 @@ fun AboutSealPlusSection() {
                     modifier = Modifier.size(28.dp)
                 )
                 Text(
-                    text = "About Seal Plus",
+                    text = "About Walrus",
                     style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -563,7 +563,7 @@ fun WhySponsorSection(isDarkTheme: Boolean, isGradientDark: Boolean) {
             BenefitItem(
                 emoji = "🔒",
                 title = "Always Free",
-                description = "Your sponsorship ensures Seal Plus remains free and open-source for everyone"
+                description = "Your sponsorship ensures Walrus remains free and open-source for everyone"
             )
             
             Box(
@@ -667,7 +667,7 @@ fun DeveloperMessageSection(
                 verticalAlignment = Alignment.Top
             ) {
                 AsyncImageImpl(
-                    model = gitHubAvatar("MaheshTechnicals"),
+                    model = gitHubAvatar("Ziad-Yousfi"),
                     contentDescription = null,
                     modifier = Modifier
                         .size(72.dp)
@@ -716,7 +716,7 @@ fun DeveloperMessageSection(
             ) {
                 Button(
                     onClick = {
-                        uriHandler.openUri("https://github.com/sponsors/MaheshTechnicals")
+                        uriHandler.openUri("https://github.com/sponsors/Ziad-Yousfi")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
@@ -740,7 +740,7 @@ fun DeveloperMessageSection(
                 
                 FilledTonalButton(
                     onClick = {
-                        uriHandler.openUri("https://github.com/MaheshTechnicals/Sealplus")
+                        uriHandler.openUri("https://github.com/Ziad-Yousfi/Walrus")
                     },
                     modifier = Modifier.fillMaxWidth(),
                     shape = RoundedCornerShape(12.dp),
